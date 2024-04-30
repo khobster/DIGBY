@@ -16,12 +16,14 @@
         }
         .search-container {
             text-align: center;
+            width: 100%;
         }
         .search-box {
             padding: 10px 20px;
             width: 500px;
             max-width: 90%;
-            margin-top: 20px;
+            margin: 0 auto; /* Center horizontally */
+            display: block; /* Make input block level to allow for centering */
             border: 1px solid #ddd;
             border-radius: 24px;
             font-size: 16px;
@@ -34,17 +36,19 @@
             background-color: #4285f4;
             color: white;
             cursor: pointer;
-            margin-top: 20px;
+            display: block; /* Make button block level to allow for centering */
+            margin: 20px auto; /* Center button and add margin on top and bottom */
         }
         .logo {
             max-width: 300px; /* You can adjust this to fit your logo */
-            margin-bottom: 20px;
+            margin: 0 auto; /* Center logo */
+            display: block; /* Ensure the image is treated as a block-level element */
         }
     </style>
 </head>
 <body>
     <div class="search-container">
-        <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo">
+        <img src="path_to_your_logo.png" alt="DIGBY Logo" class="logo">
         <input type="text" class="search-box" placeholder="Ask me anything...">
         <button class="search-btn" onclick="submitQuery()">Ask DIGBY</button>
     </div>
