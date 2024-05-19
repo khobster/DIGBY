@@ -58,17 +58,18 @@
     <div class="search-container">
         <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo">
         <input type="text" class="search-box" placeholder="Paste your copy, explain what it's for, & we'll enhance it...">
-        <button class="search-btn" onclick="submitQuery()">DIGBY it</button>
+        <button class="search-btn" onclick="submitQuery('/digby')">DIGBY it</button>
+        <button class="search-btn" onclick="submitQuery('/copywriting')">Copywriting</button>
         <div class="response" id="response"></div>
     </div>
 
     <script>
-        async function submitQuery() {
+        async function submitQuery(endpoint) {
             const query = document.querySelector('.search-box').value;
             const responseDiv = document.getElementById('response');
 
             try {
-                const response = await fetch('https://77e1pmabpl.execute-api.us-east-1.amazonaws.com/dev/analyze', {
+                const response = await fetch(`https://77e1pmabpl.execute-api.us-east-1.amazonaws.com/dev${endpoint}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -81,7 +82,7 @@
                 }
 
                 const data = await response.json();
-                responseDiv.innerText = 'Feedback: ' + data.feedback;
+                responseDiv.innerText = 'Feedback: ' + data.transformedText;
             } catch (error) {
                 responseDiv.innerText = 'Error: ' + error.message;
             }
