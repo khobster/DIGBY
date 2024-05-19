@@ -29,6 +29,12 @@
             border-radius: 24px;
             font-size: 16px;
         }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
         .search-btn {
             padding: 10px 20px;
             font-size: 16px;
@@ -37,8 +43,6 @@
             background-color: #4285f4;
             color: white;
             cursor: pointer;
-            display: block; /* Make button block level to allow for centering */
-            margin: 20px auto; /* Center button and add margin on top and bottom */
         }
         .logo {
             max-width: 300px; /* You can adjust this to fit your logo */
@@ -58,8 +62,10 @@
     <div class="search-container">
         <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo">
         <input type="text" class="search-box" placeholder="Paste your copy, explain what it's for, & we'll enhance it...">
-        <button class="search-btn" onclick="submitQuery('/digby')">DIGBY it</button>
-        <button class="search-btn" onclick="submitQuery('/copywriting')">Copywriting</button>
+        <div class="button-container">
+            <button class="search-btn" onclick="submitQuery('/digby')">DIGBY it</button>
+            <button class="search-btn" onclick="submitQuery('/copywriting')">Copywriting</button>
+        </div>
         <div class="response" id="response"></div>
     </div>
 
@@ -82,7 +88,7 @@
                 }
 
                 const data = await response.json();
-                responseDiv.innerText = 'Feedback: ' + data.transformedText;
+                responseDiv.innerText = 'Feedback: ' + data.feedback;
             } catch (error) {
                 responseDiv.innerText = 'Error: ' + error.message;
             }
