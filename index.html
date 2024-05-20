@@ -23,15 +23,16 @@
             padding: 10px 20px;
             width: 500px;
             max-width: 90%;
-            margin: 0 auto;
-            display: block;
+            margin: 0 auto; /* Center horizontally */
+            display: block; /* Make input block level to allow for centering */
             border: 1px solid #ddd;
             border-radius: 24px;
             font-size: 16px;
         }
-        .buttons-container {
+        .button-container {
             display: flex;
             justify-content: center;
+            gap: 10px;
             margin-top: 20px;
         }
         .search-btn {
@@ -42,19 +43,18 @@
             background-color: #4285f4;
             color: white;
             cursor: pointer;
-            margin: 0 10px;
         }
         .logo {
-            max-width: 300px;
-            margin: 0 auto;
-            display: block;
+            max-width: 300px; /* You can adjust this to fit your logo */
+            margin: 0 auto; /* Center logo */
+            display: block; /* Ensure the image is treated as a block-level element */
         }
         .response {
             margin-top: 20px;
             font-size: 16px;
             color: #333;
             text-align: center;
-            white-space: pre-wrap;
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
         }
     </style>
 </head>
@@ -62,26 +62,25 @@
     <div class="search-container">
         <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo">
         <input type="text" class="search-box" placeholder="Paste your copy, explain what it's for, & we'll enhance it...">
-        <div class="buttons-container">
-            <button class="search-btn" onclick="submitQuery('digby')">DIGBY It</button>
-            <button class="search-btn" onclick="submitQuery('copywriting')">Copywriting</button>
+        <div class="button-container">
+            <button class="search-btn" onclick="submitQuery('/digby')">DIGBY it</button>
+            <button class="search-btn" onclick="submitQuery('/copywriting')">Copywriting</button>
         </div>
         <div class="response" id="response"></div>
     </div>
 
     <script>
-        async function submitQuery(mode) {
+        async function submitQuery(endpoint) {
             const query = document.querySelector('.search-box').value;
             const responseDiv = document.getElementById('response');
-            const endpoint = 'https://77e1pmabpl.execute-api.us-east-1.amazonaws.com/dev/analyze';
 
             try {
-                const response = await fetch(endpoint, {
+                const response = await fetch(`https://77e1pmabpl.execute-api.us-east-1.amazonaws.com/dev/analyze`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ text: query, mode: mode })
+                    body: JSON.stringify({ text: query })
                 });
 
                 if (!response.ok) {
@@ -89,9 +88,9 @@
                 }
 
                 const data = await response.json();
-                responseDiv.innerText = `Transformed Text: ${data.transformedText}`;
+                responseDiv.innerText = 'Feedback: ' + data.feedback;
             } catch (error) {
-                responseDiv.innerText = `Error: ${error.message}`;
+                responseDiv.innerText = 'Error: ' + error.message;
             }
         }
     </script>
