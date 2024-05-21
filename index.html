@@ -55,12 +55,13 @@
             color: #333;
             text-align: center;
             white-space: pre-wrap;
-            max-height: 300px; /* Limit height */
-            overflow-y: auto; /* Add vertical scroll */
-            border: 1px solid #ddd;
+            max-width: 90%;
+            margin: 20px auto;
             padding: 10px;
-            border-radius: 8px;
-            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            overflow-y: auto;
+            max-height: 200px;
         }
     </style>
 </head>
@@ -95,7 +96,7 @@
                 }
 
                 const data = await response.json();
-                responseDiv.innerText = `Transformed Text:\n${data.transformedText}`;
+                responseDiv.innerText = `Digby wrote it like this: ${data.transformedText}`;
             } catch (error) {
                 responseDiv.innerText = `Error: ${error.message}`;
             }
