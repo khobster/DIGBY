@@ -86,7 +86,7 @@
     <div class="search-container">
         <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo" id="logo">
         <input type="text" class="search-box" placeholder="Paste your copy, explain what it's for, & we'll enhance it...">
-        <div class="warning" id="warning" style="display: none;">Please enter no more than 200 words.</div>
+        <div class="warning" id="warning" style="display: none;">Please enter no more than 500 words.</div>
         <div class="buttons-container">
             <button class="search-btn" onclick="submitQuery('digby')">DIGBY It</button>
             <button class="search-btn" onclick="submitQuery('copywriting')">Copywriting</button>
@@ -106,7 +106,7 @@
             const logo = document.getElementById('logo');
             const wordCount = countWords(query);
 
-            if (wordCount > 200) {
+            if (wordCount > 500) {
                 warningDiv.style.display = 'block';
                 return;
             } else {
