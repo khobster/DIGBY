@@ -48,6 +48,10 @@
             max-width: 300px;
             margin: 0 auto;
             display: block;
+            transition: transform 2s linear;
+        }
+        .logo.spin {
+            transform: rotate(360deg);
         }
         .response {
             margin-top: 20px;
@@ -57,23 +61,19 @@
             white-space: pre-wrap;
             max-height: 200px;
             overflow-y: auto;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .spin {
-            animation: spin 1s linear infinite;
+        .warning {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div class="search-container">
-        <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo" id="flamingo">
+        <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo" id="logo">
         <input type="text" class="search-box" placeholder="Paste your copy, explain what it's for, & we'll enhance it...">
+        <div class="warning" id="warning" style="display: none;">Please enter no more than 200 words.</div>
         <div class="buttons-container">
             <button class="search-btn" onclick="submitQuery('digby')">DIGBY It</button>
             <button class="search-btn" onclick="submitQuery('copywriting')">Copywriting</button>
@@ -82,16 +82,29 @@
     </div>
 
     <script>
+        function countWords(str) {
+            return str.trim().split(/\s+/).length;
+        }
+
         async function submitQuery(mode) {
             const query = document.querySelector('.search-box').value;
             const responseDiv = document.getElementById('response');
-            const flamingo = document.getElementById('flamingo');
+            const warningDiv = document.getElementById('warning');
+            const logo = document.getElementById('logo');
+            const wordCount = countWords(query);
+
+            if (wordCount > 200) {
+                warningDiv.style.display = 'block';
+                return;
+            } else {
+                warningDiv.style.display = 'none';
+            }
+
             const endpoint = 'https://77e1pmabpl.execute-api.us-east-1.amazonaws.com/dev/analyze';
 
-            // Start spinning the flamingo
-            flamingo.classList.add('spin');
-
             try {
+                logo.classList.add('spin');
+
                 const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {
@@ -105,12 +118,11 @@
                 }
 
                 const data = await response.json();
-                responseDiv.innerText = `Digby wrote it like this: ${data.transformedText}`;
+                responseDiv.innerText = `${mode === 'digby' ? 'Digby wrote it like this:' : 'Transformed Text:'} ${data.transformedText}`;
             } catch (error) {
                 responseDiv.innerText = `Error: ${error.message}`;
             } finally {
-                // Stop spinning the flamingo
-                flamingo.classList.remove('spin');
+                logo.classList.remove('spin');
             }
         }
     </script>
