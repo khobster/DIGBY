@@ -248,15 +248,14 @@
             closeModal();
         }
 
-        async function submitQuery(mode) {
+               async function submitQuery(mode) {
             const query = document.querySelector('.search-box').value;
             const responseDiv = document.getElementById('response');
             const warningDiv = document.getElementById('warning');
             const logo = document.getElementById('logo');
             const wordCount = countWords(query);
 
-           
-if (wordCount > 500) {
+            if (wordCount > 500) {
                 warningDiv.style.display = 'block';
                 return;
             } else {
