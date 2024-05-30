@@ -7,13 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <title>DIGBY Chatbot</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-JL3X2414G2');
-    </script>
-<style>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-JL3X2414G2');
+  </script>
+    <style>
         body {
             font-family: 'Inter', sans-serif;
             display: flex;
@@ -87,18 +88,6 @@
             font-size: 14px;
             margin-top: 10px;
         }
-        .bypass-box {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            cursor: pointer;
-        }
-        .bypass-input {
-            display: none;
-            position: fixed;
-            bottom: 50px;
-            right: 10px;
-        }
     </style>
 </head>
 <body>
@@ -113,69 +102,9 @@
         <div class="response" id="response"></div>
     </div>
 
-    <div class="bypass-box" onclick="toggleBypassInput()">📦</div>
-    <div class="bypass-input" id="bypassInputContainer">
-        <input type="text" id="bypassInput" placeholder="Enter code">
-        <button onclick="submitBypassCode()">Submit</button>
-    </div>
-
-    <div id="emailModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2>Please enter your email to continue:</h2>
-            <input type="email" id="emailInput" placeholder="Your email" required>
-            <button onclick="submitEmail()">Submit</button>
-        </div>
-    </div>
-    <div id="paywallModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2>Subscribe to get more queries:</h2>
-            <button onclick="subscribe('price_100_queries')">$9.99/mo for 100 queries</button>
-            <button onclick="subscribe('price_500_queries')">$25.99/mo for 500 queries</button>
-            <button onclick="subscribe('price_unlimited_queries')">$1,000/mo for unlimited queries</button>
-        </div>
-    </div>
     <script>
-        let queryCount = localStorage.getItem('queryCount') || 5; // Start with 5 free queries
-
         function countWords(str) {
             return str.trim().split(/\s+/).length;
-        }
-
-        function toggleBypassInput() {
-            const container = document.getElementById('bypassInputContainer');
-            container.style.display = container.style.display === 'none' ? 'block' : 'none';
-        }
-
-        async function submitBypassCode() {
-            const code = document.getElementById('bypassInput').value;
-            const response = await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/verify-bypass-new', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ bypassCode: code })
-            });
-
-            if (response.ok) {
-                queryCount = Infinity;
-                alert('Bypass code accepted. Unlimited queries enabled.');
-            } else {
-                alert('Invalid bypass code.');
-            }
-        }
-
-        async function submitEmail() {
-            const email = document.getElementById('emailInput').value;
-            await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email-new', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: email })
-            });
-            closeModal();
         }
 
         async function submitQuery(mode) {
@@ -192,18 +121,7 @@
                 warningDiv.style.display = 'none';
             }
 
-            if (!localStorage.getItem('digbyUserEmail') && queryCount === 0) {
-                openModal();
-                return;
-            }
-
-            if (queryCount <= 0) {
-                alert('No remaining queries. Please subscribe for more queries.');
-                openPaymentModal();
-                return;
-            }
-
-            const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze';
+            const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze';  // Update with the new endpoint URL
 
             try {
                 logo.classList.add('spin');
@@ -222,60 +140,12 @@
 
                 const data = await response.json();
                 responseDiv.innerText = `${mode === 'digby' ? 'Digby wrote it like this:' : 'Transformed Text:'} ${data.transformedText}`;
-                if (queryCount !== Infinity) {
-                    queryCount--;
-                    localStorage.setItem('queryCount', queryCount);
-                }
             } catch (error) {
                 responseDiv.innerText = `Error: ${error.message}`;
             } finally {
                 logo.classList.remove('spin');
             }
         }
-
-
-        function openModal() {
-            const modal = document.getElementById('emailModal');
-            modal.style.display = 'block';
-        }
-
-        function openPaywallModal() {
-            const modal = document.getElementById('paywallModal');
-            modal.style.display = 'block';
-        }
-
-        async function subscribe(priceId) {
-            const email = document.getElementById('emailInput').value;
-
-            const response = await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/create-subscription-new', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: email, priceId: priceId })
-            });
-
-            if (response.ok) {
-                alert('Subscription successful! You now have more queries available.');
-                queryCount = priceId === 'price_100_queries' ? 100 : priceId === 'price_500_queries' ? 500 : Infinity;
-                closeModal();
-            } else {
-                alert('Subscription failed. Please try again.');
-            }
-        }
-
-        function closeModal() {
-            const emailModal = document.getElementById('emailModal');
-            if (emailModal) {
-                emailModal.style.display = 'none';
-            }
-            const paymentModal = document.getElementById('paywallModal');
-            if (paymentModal) {
-                paymentModal.style.display = 'none';
-            }
-        }
-
-       
     </script>
 </body>
 </html>
