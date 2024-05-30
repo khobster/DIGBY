@@ -94,6 +94,12 @@
             right: 10px;
             cursor: pointer;
         }
+        .bypass-input {
+            display: none;
+            position: fixed;
+            bottom: 50px;
+            right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -109,7 +115,7 @@
     </div>
 
     <div class="bypass-box" onclick="toggleBypassInput()">📦</div>
-    <div id="bypassInputContainer" style="display: none;">
+    <div class="bypass-input" id="bypassInputContainer">
         <input type="text" id="bypassInput" placeholder="Enter code">
         <button onclick="submitBypassCode()">Submit</button>
     </div>
@@ -172,7 +178,7 @@
                 warningDiv.style.display = 'none';
             }
 
-            if (!emailCollected) {
+            if (!emailCollected && queryCount <= 4) {
                 openModal();
                 return;
             }
@@ -193,7 +199,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ text: query, mode: mode, email: document.getElementById('emailInput').value })
+                    body: JSON.stringify({ text: query, mode: mode, email: document.getElementById('emailInput') ? document.getElementById('emailInput').value : '' })
                 });
 
                 if (!response.ok) {
@@ -255,8 +261,7 @@
             modal.style.justifyContent = 'center';
             modal.style.alignItems = 'center';
             modal.innerHTML = `
-                <div style="background: white;
-                    padding: 20px; border-radius: 10px; text-align: center;">
+                <div style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
                     <p>Subscribe to get more queries:</p>
                     <button onclick="subscribe('price_50_queries')">50 queries for $9.99/month</button>
                     <button onclick="subscribe('price_200_queries')">200 queries for $29.99/month</button>
@@ -286,9 +291,13 @@
         }
 
         function closeModal() {
-            const modal = document.getElementById('paymentModal');
+            const modal = document.getElementById('emailModal');
             if (modal) {
                 modal.remove();
+            }
+            const paymentModal = document.getElementById('paymentModal');
+            if (paymentModal) {
+                paymentModal.remove();
             }
         }
     </script>
