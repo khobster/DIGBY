@@ -248,7 +248,7 @@
             closeModal();
         }
 
-               async function submitQuery(mode) {
+                       async function submitQuery(mode) {
             const query = document.querySelector('.search-box').value;
             const responseDiv = document.getElementById('response');
             const warningDiv = document.getElementById('warning');
@@ -262,7 +262,8 @@
                 warningDiv.style.display = 'none';
             }
 
-            if (!emailCollected) {
+            // If the queryCount is 4 (first query was already done), show email modal
+            if (!emailCollected && queryCount < 5) {
                 showModal();
                 return;
             }
@@ -277,6 +278,7 @@
             try {
                 logo.classList.add('spin');
 
+                const response = await
                 const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {
