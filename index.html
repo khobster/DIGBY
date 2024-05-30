@@ -136,19 +136,15 @@
             cursor: pointer;
         }
         .bypass-container {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            width: 200px;
+            margin-top: 10px;
+            width: 100%;
             display: none;
+            text-align: center;
         }
         .bypass-btn {
-            padding: 5px 10px;
-            font-size: 14px;
+            font-size: 24px;
             border: none;
-            border-radius: 5px;
-            background-color: #4285f4;
-            color: white;
+            background: none;
             cursor: pointer;
         }
     </style>
@@ -163,6 +159,11 @@
             <button class="search-btn" onclick="submitQuery('copywriting')">frame it</button>
         </div>
         <div class="response" id="response"></div>
+        <div class="bypass-container" id="bypassContainer">
+            <input type="text" id="bypassCode" class="email-input" placeholder="Enter code">
+            <button class="submit-btn" onclick="useBypassCode()">Submit</button>
+        </div>
+        <button class="bypass-btn" onclick="toggleBypassContainer()">📦</button>
     </div>
 
     <div id="emailModal" class="modal">
@@ -183,12 +184,6 @@
             <button class="submit-btn" onclick="subscribeToPlan('plan_premium')">Subscribe - $29.99/month</button>
         </div>
     </div>
-
-    <div class="bypass-container" id="bypassContainer">
-        <input type="text" id="bypassCode" class="email-input" placeholder="Enter code">
-        <button class="bypass-btn" onclick="useBypassCode()">Submit</button>
-    </div>
-    <button class="bypass-btn" onclick="toggleBypassContainer()">Bypass Code</button>
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
@@ -248,10 +243,11 @@
             closeModal();
         }
 
-                       async function submitQuery(mode) {
+        async function submitQuery(mode) {
             const query = document.querySelector('.search-box').value;
             const responseDiv = document.getElementById('response');
             const warningDiv = document.getElementById('warning');
+           
             const logo = document.getElementById('logo');
             const wordCount = countWords(query);
 
@@ -278,7 +274,6 @@
             try {
                 logo.classList.add('spin');
 
-                const response = await
                 const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {
