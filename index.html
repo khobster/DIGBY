@@ -101,51 +101,58 @@
         </div>
         <div class="response" id="response"></div>
     </div>
+    <div class="response" id="response"></div>
+        <div class="email-prompt" id="email-prompt">
+            <input type="email" class="email-input" id="email" placeholder="Enter your email">
+            <button class="email-submit" onclick="submitEmail()">Submit Email</button>
+        </div>
 
     <script>
-        function countWords(str) {
-            return str.trim().split(/\s+/).length;
+    async function submitQuery(mode) {
+        const query = document.querySelector('.search-box').value;
+        const responseDiv = document.getElementById('response');
+        const warningDiv = document.getElementById('warning');
+        const logo = document.getElementById('logo');
+        const wordCount = countWords(query);
+
+        if (wordCount > 500) {
+            warningDiv.style.display = 'block';
+            return;
+        } else {
+            warningDiv.style.display = 'none';
         }
 
-        async function submitQuery(mode) {
-            const query = document.querySelector('.search-box').value;
-            const responseDiv = document.getElementById('response');
-            const warningDiv = document.getElementById('warning');
-            const logo = document.getElementById('logo');
-            const wordCount = countWords(query);
+        const endpoint = '/analyze';  // Use the route defined in your backend
 
-            if (wordCount > 500) {
-                warningDiv.style.display = 'block';
+        try {
+            logo.classList.add('spin');
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: query, mode: mode })
+            });
+
+            if (response.status === 403) {
+                document.getElementById('email-prompt').style.display = 'block';
+                responseDiv.innerText = 'Please provide your email to continue.';
                 return;
-            } else {
-                warningDiv.style.display = 'none';
             }
 
-            const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze';  // Update with the new endpoint URL
-
-            try {
-                logo.classList.add('spin');
-
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ text: query, mode: mode })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                responseDiv.innerText = `${mode === 'digby' ? 'Digby wrote it like this:' : 'Transformed Text:'} ${data.transformedText}`;
-            } catch (error) {
-                responseDiv.innerText = `Error: ${error.message}`;
-            } finally {
-                logo.classList.remove('spin');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+
+            const data = await response.json();
+            responseDiv.innerText = `${mode === 'digby' ? 'Digby wrote it like this:' : 'Transformed Text:'} ${data.transformedText}`;
+        } catch (error) {
+            responseDiv.innerText = `Error: ${error.message}`;
+        } finally {
+            logo.classList.remove('spin');
         }
-    </script>
+    }
+</script>
 </body>
 </html>
