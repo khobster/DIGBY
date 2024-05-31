@@ -206,7 +206,7 @@
             const email = document.getElementById('email').value;
             const responseDiv = document.getElementById('response');
 
-            const endpoint = '/store-email'; // Use the route defined in your backend
+            const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email'; // Use the route defined in your backend
 
             try {
                 const response = await fetch(endpoint, {
