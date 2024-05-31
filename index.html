@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <title>DIGBY Chatbot</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'G-JL3X2414G2');
-  </script>
+        gtag('config', 'G-JL3X2414G2');
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -89,39 +89,37 @@
             margin-top: 10px;
         }
         .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        padding-top: 60px;
-    }
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -136,109 +134,108 @@
         <div class="response" id="response"></div>
     </div>
     <div id="emailModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <p>Please provide your email to continue:</p>
-        <input type="email" class="email-input" id="email" placeholder="Enter your email">
-        <button class="email-submit" onclick="submitEmail()">Submit Email</button>
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Please provide your email to continue:</p>
+            <input type="email" class="email-input" id="email" placeholder="Enter your email">
+            <button class="email-submit" onclick="submitEmail()">Submit Email</button>
+        </div>
     </div>
-</div>
-
-   <script>
-    function countWords(str) {
-        return str.trim().split(/\s+/).length;
-    }
-
-    function showModal() {
-        const modal = document.getElementById('emailModal');
-        modal.style.display = 'block';
-    }
-
-    function closeModal() {
-        const modal = document.getElementById('emailModal');
-        modal.style.display = 'none';
-    }
-
-    async function submitQuery(mode) {
-        const query = document.querySelector('.search-box').value;
-        const responseDiv = document.getElementById('response');
-        const warningDiv = document.getElementById('warning');
-        const logo = document.getElementById('logo');
-        const wordCount = countWords(query);
-
-        if (wordCount > 500) {
-            warningDiv.style.display = 'block';
-            return;
-        } else {
-            warningDiv.style.display = 'none';
+    <script>
+        function countWords(str) {
+            return str.trim().split(/\s+/).length;
         }
 
-        const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze';  // Update with the new endpoint URL
+        function showModal() {
+            const modal = document.getElementById('emailModal');
+            modal.style.display = 'block';
+        }
 
-        try {
-            logo.classList.add('spin');
+        function closeModal() {
+            const modal = document.getElementById('emailModal');
+            modal.style.display = 'none';
+        }
 
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ text: query, mode: mode })
-            });
+        async function submitQuery(mode) {
+            const query = document.querySelector('.search-box').value;
+            const responseDiv = document.getElementById('response');
+            const warningDiv = document.getElementById('warning');
+            const logo = document.getElementById('logo');
+            const wordCount = countWords(query);
 
-            if (response.status === 403) {
-                showModal();
-                responseDiv.innerText = 'Please provide your email to continue.';
+            if (wordCount > 500) {
+                warningDiv.style.display = 'block';
                 return;
+            } else {
+                warningDiv.style.display = 'none';
             }
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze';  // Update with the new endpoint URL
+
+            try {
+                logo.classList.add('spin');
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: query, mode: mode })
+                });
+
+                if (response.status === 403) {
+                    showModal();
+                    responseDiv.innerText = 'Please provide your email to continue.';
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                responseDiv.innerText = `${mode === 'digby' ? 'Digby wrote it like this:' : 'Transformed Text:'} ${data.transformedText}`;
+            } catch (error) {
+                responseDiv.innerText = `Error: ${error.message}`;
+            } finally {
+                logo.classList.remove('spin');
             }
-
-            const data = await response.json();
-            responseDiv.innerText = `${mode === 'digby' ? 'Digby wrote it like this:' : 'Transformed Text:'} ${data.transformedText}`;
-        } catch (error) {
-            responseDiv.innerText = `Error: ${error.message}`;
-        } finally {
-            logo.classList.remove('spin');
         }
-    }
 
-    async function submitEmail() {
-        const email = document.getElementById('email').value;
-        const responseDiv = document.getElementById('response');
+        async function submitEmail() {
+            const email = document.getElementById('email').value;
+            const responseDiv = document.getElementById('response');
 
-        const endpoint = '/store-email'; // Use the route defined in your backend
+            const endpoint = '/store-email'; // Use the route defined in your backend
 
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: email })
-            });
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                responseDiv.innerText = data.message;
+                closeModal();
+            } catch (error) {
+                responseDiv.innerText = `Error: ${error.message}`;
             }
-
-            const data = await response.json();
-            responseDiv.innerText = data.message;
-            closeModal();
-        } catch (error) {
-            responseDiv.innerText = `Error: ${error.message}`;
         }
-    }
 
-    // Close the modal if the user clicks outside of it
-    window.onclick = function(event) {
-        const modal = document.getElementById('emailModal');
-        if (event.target == modal) {
-            closeModal();
+        // Close the modal if the user clicks outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('emailModal');
+            if (event.target == modal) {
+                closeModal();
+            }
         }
-    }
-</script>
+    </script>
 </body>
 </html>
