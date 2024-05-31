@@ -108,6 +108,10 @@
         </div>
 
     <script>
+    function countWords(str) {
+        return str.trim().split(/\s+/).length;
+    }
+
     async function submitQuery(mode) {
         const query = document.querySelector('.search-box').value;
         const responseDiv = document.getElementById('response');
@@ -122,7 +126,7 @@
             warningDiv.style.display = 'none';
         }
 
-        const endpoint = '/analyze';  // Use the route defined in your backend
+        const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze';  // Update with the new endpoint URL
 
         try {
             logo.classList.add('spin');
@@ -151,6 +155,33 @@
             responseDiv.innerText = `Error: ${error.message}`;
         } finally {
             logo.classList.remove('spin');
+        }
+    }
+
+    async function submitEmail() {
+        const email = document.getElementById('email').value;
+        const responseDiv = document.getElementById('response');
+
+        const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email'; // Update with your endpoint URL
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            responseDiv.innerText = data.message;
+            document.getElementById('email-prompt').style.display = 'none';
+        } catch (error) {
+            responseDiv.innerText = `Error: ${error.message}`;
         }
     }
 </script>
