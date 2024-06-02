@@ -120,6 +120,11 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .success-message {
+            color: green;
+            font-size: 16px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -139,6 +144,7 @@
             <p>Please provide your email to continue:</p>
             <input type="email" class="email-input" id="email" placeholder="Enter your email">
             <button class="email-submit" onclick="submitEmail()">Submit Email</button>
+            <div class="success-message" id="success-message" style="display: none;">Hooray! Your email has been submitted.</div>
         </div>
     </div>
     <script>
@@ -205,6 +211,7 @@
         async function submitEmail() {
             const email = document.getElementById('email').value;
             const responseDiv = document.getElementById('response');
+            const successMessage = document.getElementById('success-message');
 
             const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email'; // Use the route defined in your backend
 
@@ -223,7 +230,8 @@
 
                 const data = await response.json();
                 responseDiv.innerText = data.message;
-                closeModal();
+                successMessage.style.display = 'block'; // Show success message
+                setTimeout(closeModal, 2000); // Close the modal after 2 seconds
             } catch (error) {
                 responseDiv.innerText = `Error: ${error.message}`;
             }
