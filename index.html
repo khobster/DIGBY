@@ -212,10 +212,14 @@
             const email = document.getElementById('email').value;
             const responseDiv = document.getElementById('response');
             const successMessage = document.getElementById('success-message');
+            const emailButton = document.querySelector('.email-submit');
 
             const endpoint = 'https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email'; // Use the route defined in your backend
 
             try {
+                emailButton.disabled = true; // Disable the button to prevent multiple submissions
+                emailButton.innerText = 'Submitting...'; // Change button text
+
                 const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {
@@ -231,9 +235,13 @@
                 const data = await response.json();
                 responseDiv.innerText = data.message;
                 successMessage.style.display = 'block'; // Show success message
-                setTimeout(closeModal, 2000); // Close the modal after 2 seconds
+                emailButton.innerText = 'Submitted!';
+                emailButton.style.backgroundColor = 'green'; // Change button color to green
+                setTimeout(closeModal, 2000); // Close modal after 2 seconds
             } catch (error) {
                 responseDiv.innerText = `Error: ${error.message}`;
+                emailButton.disabled = false; // Re-enable the button if there's an error
+                emailButton.innerText = 'Submit Email'; // Revert button text
             }
         }
 
