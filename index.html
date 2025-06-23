@@ -128,12 +128,12 @@
 
       // enable copy
       copyBtn.style.display='block';
-      copyBtn.innerText='📋';
+      copyBtn.innerText='🧲';
       copyBtn.onclick=async()=>{
         try{
           await navigator.clipboard.writeText(data.transformedText);
           copyBtn.innerText='✅';
-          setTimeout(()=>copyBtn.innerText='📋',1500);
+          setTimeout(()=>copyBtn.innerText='🧲',1500);
         }catch(e){copyBtn.innerText='❌';}
       };
 
