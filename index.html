@@ -10,21 +10,17 @@
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-JL3X2414G2');
+    window.dataLayer=[];function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config','G-JL3X2414G2');
   </script>
 
   <style>
     body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#f2f2f2;}
     .search-container{text-align:center;width:100%;}
     .search-box{padding:10px 20px;width:500px;max-width:90%;margin:0 auto;display:block;border:1px solid #ddd;border-radius:24px;font-size:16px;}
+
     .buttons-container{display:flex;justify-content:center;margin-top:20px;}
     .search-btn{padding:10px 20px;font-size:16px;border:none;border-radius:24px;background:#4285f4;color:#fff;cursor:pointer;margin:0 10px;}
-
-    /* style-picker bar */
-    .style-bar{display:none;justify-content:center;gap:12px;margin-top:12px;}
 
     .logo{max-width:300px;margin:0 auto;display:block;transition:transform .5s linear;}
     .logo.spin{animation:spin 2s linear infinite;}
@@ -40,17 +36,17 @@
     .copy-btn:hover{opacity:1;}
 
     .fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
-
     .edit-note{font-size:12px;color:#666;text-align:center;margin-top:10px;}
     .warning{color:red;font-size:14px;margin-top:10px;}
 
-    /* modal styles unchanged */
-    .modal{display:none;position:fixed;z-index:1;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,.4);justify-content:center;align-items:center;}
-    .modal-content{background:#fff;margin:auto;padding:20px;border:1px solid #888;width:80%;max-width:400px;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,.2);animation:animateModal .4s;}
-    @keyframes animateModal{from{top:-300px;opacity:0}to{top:0;opacity:1}}
-    .modal-content .logo{max-width:100px;margin-bottom:20px;}
-    .modal-content button{background:#4285f4;color:#fff;padding:10px 20px;border:none;border-radius:24px;cursor:pointer;font-size:16px;}
-    .success-message{color:green;font-size:16px;margin-top:10px;}
+    /* generic modal shell (re-used) */
+    .modal{display:none;position:fixed;z-index:2;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.4);
+           justify-content:center;align-items:center;}
+    .modal-content{background:#fff;padding:24px 32px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;}
+
+    /* style chooser buttons */
+    .style-btn{padding:12px 28px;margin:0 12px;border:none;border-radius:20px;background:#333;color:#fff;cursor:pointer;font-size:16px;text-transform:lowercase;}
+    .style-btn:hover{background:#111;}
   </style>
 </head>
 <body>
@@ -64,13 +60,6 @@
       <button class="search-btn" onclick="submitQuery('copywriting')">frame it</button>
     </div>
 
-    <!-- style picker appears after DIGBY it -->
-    <div class="style-bar" id="styleBar">
-      <span style="align-self:center;">Choose a style:</span>
-      <button class="search-btn" onclick="runStyle('lish')">Lish</button>
-      <button class="search-btn" onclick="runStyle('gonzo')">Gonzo</button>
-    </div>
-
     <div class="response-wrapper">
       <button class="copy-btn" id="copyBtn" title="Copy to clipboard">📦</button>
       <div class="response" id="response"></div>
@@ -80,66 +69,67 @@
     <div class="edit-note">Always edit what Digby gives you. Writing is rewriting. 😉</div>
   </div>
 
-  <!-- existing modals remain … -->
+  <!-- style-picker modal -->
+  <div id="styleModal" class="modal">
+    <div class="modal-content">
+      <p style="margin-top:0;margin-bottom:18px;font-weight:600;">pick a style</p>
+      <button class="style-btn" onclick="runStyle('lish')">lish</button>
+      <button class="style-btn" onclick="runStyle('gonzo')">gonzo</button>
+    </div>
+  </div>
+
+  <!-- (welcome & email modals remain unchanged in your file) -->
 
 <script>
-  function countWords(str){return str.trim().split(/\\s+/).length;}
-  function escapeHTML(str){return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function countWords(s){return s.trim().split(/\\s+/).length;}
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-  let lastQuery='';           // cache for style reruns
+  let lastQuery='';          // cache for style reruns
+  const copyBtn=document.getElementById('copyBtn'); copyBtn.style.display='none';
 
-  const copyBtn=document.getElementById('copyBtn');
-  copyBtn.style.display='none';
-
-  // Called when user hits DIGBY it
   function prepDigby(){
     lastQuery=document.querySelector('.search-box').value.trim();
     if(!lastQuery){alert('Paste some text first.');return;}
     if(countWords(lastQuery)>20000){document.getElementById('warning').style.display='block';return;}
-    document.getElementById('styleBar').style.display='flex';
+    document.getElementById('warning').style.display='none';
+    document.getElementById('styleModal').style.display='flex';
   }
 
-  // Called after user picks Lish or Gonzo
-  async function runStyle(style){
-    document.getElementById('styleBar').style.display='none';
-    await submitQuery('digby',style);
+  async function runStyle(styleFlag){
+    document.getElementById('styleModal').style.display='none';
+    await submitQuery('digby',styleFlag);
   }
 
   async function submitQuery(mode,style='hybrid'){
-    const logo=document.getElementById('logo');
-    const responseDiv=document.getElementById('response');
-    const fluffDiv=document.getElementById('fluffMeter');
-
+    const logo = document.getElementById('logo');
+    const resp = document.getElementById('response');
+    const fluff= document.getElementById('fluffMeter');
     const textBody = mode==='digby' ? lastQuery : document.querySelector('.search-box').value.trim();
     if(!textBody){alert('Paste some text first.');return;}
 
     try{
       logo.classList.add('spin');
-      const res=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ text:textBody, mode, style })
+      const r=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({text:textBody,mode,style})
       });
+      if(r.status===403){showModal();resp.innerText='Please provide your email to continue.';return;}
+      if(!r.ok) throw new Error('Network error');
+      const data=await r.json();
 
-      if(res.status===403){showModal();responseDiv.innerText='Please provide your email to continue.';return;}
-      if(!res.ok) throw new Error('Network response was not ok');
-
-      const data=await res.json();
-      const body=escapeHTML(data.transformedText).replace(/\\n/g,'<br>');
-      responseDiv.innerHTML='<strong>Digby wrote it like this:</strong><br><br>'+body;
-      fluffDiv.innerText=(typeof data.fluff!=='undefined')?`💭 Fluff cut: ${data.fluff}%`:'';
+      resp.innerHTML='<strong>Digby wrote it like this:</strong><br><br>'+esc(data.transformedText).replace(/\\n/g,'<br>');
+      fluff.innerText=(typeof data.fluff!=='undefined')?`💭 Fluff cut: ${data.fluff}%`:'';
 
       copyBtn.style.display='block'; copyBtn.innerText='📦';
       copyBtn.onclick=async()=>{
         try{await navigator.clipboard.writeText(data.transformedText);copyBtn.innerText='✅';setTimeout(()=>copyBtn.innerText='📦',1500);}
         catch{copyBtn.innerText='❌';}
       };
-
-    }catch(e){responseDiv.innerText=`Error: ${e.message}`;}
+    }catch(e){resp.innerText=`Error: ${e.message}`;}
     finally{logo.classList.remove('spin');}
   }
 
-  /* existing modal helpers unchanged */
+  /* existing modal helpers (welcome/email) unchanged */
 </script>
 </body>
 </html>
