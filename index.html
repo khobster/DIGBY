@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <title>DIGBY</title>
 
-  <!-- Google Analytics (unchanged) -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -17,47 +17,33 @@
   </script>
 
   <style>
-    body{
-      font-family:'Inter',sans-serif;
-      display:flex;justify-content:center;align-items:center;
-      height:100vh;margin:0;background:#f2f2f2;
-    }
+    body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#f2f2f2;}
     .search-container{text-align:center;width:100%;}
-    .search-box{
-      padding:10px 20px;width:500px;max-width:90%;margin:0 auto;display:block;
-      border:1px solid #ddd;border-radius:24px;font-size:16px;
-    }
+    .search-box{padding:10px 20px;width:500px;max-width:90%;margin:0 auto;display:block;border:1px solid #ddd;border-radius:24px;font-size:16px;}
     .buttons-container{display:flex;justify-content:center;margin-top:20px;}
-    .search-btn{
-      padding:10px 20px;font-size:16px;border:none;border-radius:24px;
-      background:#4285f4;color:#fff;cursor:pointer;margin:0 10px;
-    }
+    .search-btn{padding:10px 20px;font-size:16px;border:none;border-radius:24px;background:#4285f4;color:#fff;cursor:pointer;margin:0 10px;}
     .logo{max-width:300px;margin:0 auto;display:block;transition:transform .5s linear;}
-    .logo.spin{animation:spin 2s linear infinite;}
-    @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    .logo.spin{animation:spin 2s linear infinite;} @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 
-    /* response + copy + fluff */
     .response-wrapper{position:relative;display:inline-block;}
-    .response{
-      margin-top:20px;font-size:16px;color:#333;text-align:center;white-space:pre-wrap;
-      max-height:200px;overflow-y:auto;border:1px solid #ddd;border-radius:10px;padding:10px;
-      background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);width:500px;max-width:90%;margin:20px auto;
-    }
-    .copy-btn{
-      position:absolute;top:8px;right:8px;background:transparent;border:none;
-      cursor:pointer;font-size:16px;opacity:.6;
-    }
+    .response{margin-top:20px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto;
+              border:1px solid #ddd;border-radius:10px;padding:14px 18px 16px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
+              width:500px;max-width:90%;margin:20px auto;}
+    .response strong{font-weight:700;}
+
+    .copy-btn{position:absolute;top:6px;right:6px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
     .copy-btn:hover{opacity:1;}
-    .fluff{font-size:14px;color:#666;margin-top:6px;}
+
+    .fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
 
     .edit-note{font-size:12px;color:#666;text-align:center;margin-top:10px;}
     .warning{color:red;font-size:14px;margin-top:10px;}
 
-    /* modal styles unchanged ... */
-    .modal{display:none;position:fixed;z-index:1;left:0;top:0;width:100%;height:100%;
-           overflow:auto;background:rgba(0,0,0,.4);justify-content:center;align-items:center;}
-    .modal-content{background:#fff;margin:auto;padding:20px;border:1px solid #888;width:80%;max-width:400px;
-                   text-align:center;box-shadow:0 4px 8px rgba(0,0,0,.2);animation:animateModal .4s;}
+    /* modal styles unchanged */
+    .modal{display:none;position:fixed;z-index:1;left:0;top:0;width:100%;height:100%;overflow:auto;
+           background:rgba(0,0,0,.4);justify-content:center;align-items:center;}
+    .modal-content{background:#fff;margin:auto;padding:20px;border:1px solid #888;width:80%;max-width:400px;text-align:center;
+                   box-shadow:0 4px 8px rgba(0,0,0,.2);animation:animateModal .4s;}
     @keyframes animateModal{from{top:-300px;opacity:0}to{top:0;opacity:1}}
     .modal-content .logo{max-width:100px;margin-bottom:20px;}
     .modal-content button{background:#4285f4;color:#fff;padding:10px 20px;border:none;border-radius:24px;cursor:pointer;font-size:16px;}
@@ -76,7 +62,7 @@
     </div>
 
     <div class="response-wrapper">
-      <button class="copy-btn" id="copyBtn" title="Copy to clipboard">📋</button>
+      <button class="copy-btn" id="copyBtn" title="Copy to clipboard">🧲</button>
       <div class="response" id="response"></div>
       <div class="fluff" id="fluffMeter"></div>
     </div>
@@ -84,15 +70,18 @@
     <div class="edit-note">Always edit what Digby gives you. Writing is rewriting. 😉</div>
   </div>
 
-  <!-- modal blocks unchanged ... -->
-  <div id="emailModal" class="modal"> … </div>
-  <div id="welcomeModal" class="modal"> … </div>
+  <!-- modal markup unchanged (emailModal, welcomeModal) -->
 
 <script>
   function countWords(str){return str.trim().split(/\\s+/).length;}
 
   const copyBtn=document.getElementById('copyBtn');
-  copyBtn.style.display='none'; // hidden until we have text
+  copyBtn.style.display='none';
+
+  // escape for safe innerHTML
+  function escapeHTML(str){
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
 
   async function submitQuery(mode){
     const query=document.querySelector('.search-box').value.trim();
@@ -104,13 +93,10 @@
     if(countWords(query)>20000){warningDiv.style.display='block';return;}
     warningDiv.style.display='none';
 
-    const endpoint='https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze';
-
     try{
       logo.classList.add('spin');
-      const res=await fetch(endpoint,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
+      const res=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
+        method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({text:query,mode})
       });
 
@@ -118,33 +104,26 @@
       if(!res.ok) throw new Error('Network response was not ok');
 
       const data=await res.json();
-      responseDiv.innerText=(mode==='digby'?'Digby wrote it like this:':'Transformed Text:')+
-                             '\\n\\n'+data.transformedText;
 
-      // show fluff meter if backend supplies %
-      if(typeof data.fluff!=='undefined'){
-        fluffDiv.innerText=`💭 Fluff cut: ${data.fluff}%`;
-      }else fluffDiv.innerText='';
+      // Render label bold, preserve newlines
+      const safe=escapeHTML(data.transformedText).replace(/\\n/g,'<br>');
+      responseDiv.innerHTML='<strong>Digby wrote it like this:</strong><br><br>'+safe;
+
+      fluffDiv.innerText=(typeof data.fluff!=='undefined')?`💭 Fluff cut: ${data.fluff}%`:'';
 
       // enable copy
-      copyBtn.style.display='block';
-      copyBtn.innerText='🧲';
+      copyBtn.style.display='block'; copyBtn.innerText='🧲';
       copyBtn.onclick=async()=>{
-        try{
-          await navigator.clipboard.writeText(data.transformedText);
-          copyBtn.innerText='✅';
-          setTimeout(()=>copyBtn.innerText='🧲',1500);
-        }catch(e){copyBtn.innerText='❌';}
+        try{await navigator.clipboard.writeText(data.transformedText);
+            copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='🧲',1500);}
+        catch{copyBtn.innerText='❌';}
       };
 
-    }catch(e){
-      responseDiv.innerText=`Error: ${e.message}`;
-    }finally{
-      logo.classList.remove('spin');
-    }
+    }catch(e){responseDiv.innerText=`Error: ${e.message}`;}
+    finally{logo.classList.remove('spin');}
   }
 
-  /* existing modal helpers unchanged … */
+  /* existing modal helpers unchanged ... */
 </script>
 </body>
 </html>
