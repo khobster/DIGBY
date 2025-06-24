@@ -44,9 +44,12 @@
            justify-content:center;align-items:center;}
     .modal-content{background:#fff;padding:24px 32px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;}
 
-    /* style chooser buttons */
-    .style-btn{padding:12px 28px;margin:0 12px;border:none;border-radius:20px;background:#333;color:#fff;cursor:pointer;font-size:16px;text-transform:lowercase;}
-    .style-btn:hover{background:#111;}
+    /* style-chooser buttons */
+    .style-btn{padding:12px 28px;margin:0 12px;border:none;border-radius:20px;cursor:pointer;font-size:16px;text-transform:lowercase;color:#fff;}
+    .lish-btn {background:#222;}
+    .lish-btn:hover  {background:#000;}
+    .gonzo-btn{background:#ff5722;}
+    .gonzo-btn:hover {background:#d94e1e;}
   </style>
 </head>
 <body>
@@ -73,18 +76,18 @@
   <div id="styleModal" class="modal">
     <div class="modal-content">
       <p style="margin-top:0;margin-bottom:18px;font-weight:600;">pick a style</p>
-      <button class="style-btn" onclick="runStyle('lish')">lish</button>
-      <button class="style-btn" onclick="runStyle('gonzo')">gonzo</button>
+      <button class="style-btn lish-btn"  onclick="runStyle('lish')">🪒 lish</button>
+      <button class="style-btn gonzo-btn" onclick="runStyle('gonzo')">🦇 gonzo</button>
     </div>
   </div>
 
-  <!-- (welcome & email modals remain unchanged in your file) -->
+  <!-- (welcome & email modals unchanged) -->
 
 <script>
   function countWords(s){return s.trim().split(/\\s+/).length;}
   function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-  let lastQuery='';          // cache for style reruns
+  let lastQuery='';
   const copyBtn=document.getElementById('copyBtn'); copyBtn.style.display='none';
 
   function prepDigby(){
@@ -101,16 +104,17 @@
   }
 
   async function submitQuery(mode,style='hybrid'){
-    const logo = document.getElementById('logo');
-    const resp = document.getElementById('response');
-    const fluff= document.getElementById('fluffMeter');
+    const logo=document.getElementById('logo');
+    const resp=document.getElementById('response');
+    const fluff=document.getElementById('fluffMeter');
     const textBody = mode==='digby' ? lastQuery : document.querySelector('.search-box').value.trim();
     if(!textBody){alert('Paste some text first.');return;}
 
     try{
       logo.classList.add('spin');
       const r=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
-        method:'POST',headers:{'Content-Type':'application/json'},
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
         body:JSON.stringify({text:textBody,mode,style})
       });
       if(r.status===403){showModal();resp.innerText='Please provide your email to continue.';return;}
@@ -125,6 +129,7 @@
         try{await navigator.clipboard.writeText(data.transformedText);copyBtn.innerText='✅';setTimeout(()=>copyBtn.innerText='📦',1500);}
         catch{copyBtn.innerText='❌';}
       };
+
     }catch(e){resp.innerText=`Error: ${e.message}`;}
     finally{logo.classList.remove('spin');}
   }
