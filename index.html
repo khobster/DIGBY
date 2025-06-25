@@ -15,10 +15,11 @@
   </script>
 
   <style>
-    /* ——— core layout (unchanged) ——— */
+    /* ——— layout ——— */
     body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#f2f2f2;}
     .search-container{text-align:center;width:100%;}
     .search-box{padding:10px 20px;width:500px;max-width:90%;margin:0 auto;display:block;border:1px solid #ddd;border-radius:24px;font-size:16px;}
+
     .buttons-container{display:flex;justify-content:center;margin-top:20px;}
     .search-btn{padding:10px 20px;font-size:16px;border:none;border-radius:24px;background:#4285f4;color:#fff;cursor:pointer;margin:0 10px;}
 
@@ -31,7 +32,6 @@
               border:1px solid #ddd;border-radius:10px;padding:14px 18px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
               width:500px;max-width:90%;margin:20px auto;}
     .response strong{font-weight:700;}
-
     .copy-btn{position:absolute;top:6px;right:6px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
     .copy-btn:hover{opacity:1;}
 
@@ -39,31 +39,24 @@
     .edit-note{font-size:12px;color:#666;text-align:center;margin-top:10px;}
     .warning{color:red;font-size:14px;margin-top:10px;}
 
-    /* ——— modal shell ——— */
+    /* modal */
     .modal{display:none;position:fixed;z-index:2;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.4);
            justify-content:center;align-items:center;}
     .modal-content{background:#fff;padding:24px 32px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;}
 
-    /* ——— style-picker buttons ——— */
+    /* style buttons */
     .style-btn{padding:12px 28px;margin:0 12px;border:none;border-radius:20px;cursor:pointer;font-size:16px;text-transform:lowercase;color:#fff;
                transition:background .15s,transform .15s,box-shadow .15s;}
 
-    /* lish palette + SLICE */
     .lish-btn{background:#2c3e50;}
     .lish-btn:hover{background:#16202a;}
-    .lish-btn:active{
-      transform:scale(.75) translateY(2px);          /* deep slice */
-      box-shadow:0 0 0 2px #000 inset;
-    }
+    .lish-btn:active{transform:scale(.75) translateY(2px);box-shadow:0 0 0 2px #000 inset;}
 
-    /* gonzo palette + neon wiggle */
     .gonzo-btn{background:#e95800;}
     .gonzo-btn:hover{background:#ba4600;}
     @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
     @keyframes flash{0%,100%{filter:none}50%{filter:brightness(1.4) saturate(1.8);}}
-    .gonzo-btn:active{
-      animation:wiggle .4s ease-in-out, flash .4s linear;
-    }
+    .gonzo-btn:active{animation:wiggle .4s ease-in-out,flash .4s linear;}
   </style>
 </head>
 <body>
@@ -86,12 +79,12 @@
     <div class="edit-note">Always edit what Digby gives you. Writing is rewriting. 😉</div>
   </div>
 
-  <!-- style-picker modal -->
+  <!-- style picker -->
   <div id="styleModal" class="modal">
     <div class="modal-content">
       <p style="margin:0 0 18px;font-weight:600;">pick a style</p>
-      <button class="style-btn lish-btn"  onclick="runStyle('lish')">🪒&nbsp;lish</button>
-      <button class="style-btn gonzo-btn" onclick="runStyle('gonzo')">🦇&nbsp;gonzo</button>
+      <button class="style-btn lish-btn"  onclick="runStyle('lish',this)">🪒 lish</button>
+      <button class="style-btn gonzo-btn" onclick="runStyle('gonzo',this)">🦇 gonzo</button>
     </div>
   </div>
 
@@ -114,8 +107,10 @@
     document.getElementById('styleModal').style.display='flex';
   }
 
-  async function runStyle(flag){
-    document.getElementById('styleModal').style.display='none';
+  // delay 250 ms so :active animation is visible
+  async function runStyle(flag, btn){
+    btn.blur();                                   // mobile browsers: release focus
+    setTimeout(()=>{ document.getElementById('styleModal').style.display='none'; }, 250);
     await submitQuery('digby',flag);
   }
 
