@@ -16,90 +16,92 @@
 
   <style>
     :root{
-      /* brand palette for neumorphic buttons */
-      --blue:#4285f4;
-      --navy:#2c3e50;
-      --orange:#e95800;
+      --blue:   #4285f4;
+      --navy:   #2c3e50;
+      --orange: #e95800;
+      --bg:     #f2f2f2;
     }
 
-    /* ────────── layout ────────── */
-    body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#f2f2f2;}
+    /* ───── layout ───── */
+    body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:var(--bg);}
     .search-container{text-align:center;width:100%;}
-    .search-box{padding:10px 20px;width:500px;max-width:90%;margin:0 auto;display:block;border:1px solid #ddd;border-radius:24px;font-size:16px;}
+    .search-box{padding:12px 22px;width:500px;max-width:90%;margin:0 auto;display:block;border:1px solid #ddd;border-radius:28px;font-size:16px;}
 
-    .buttons-container{display:flex;justify-content:center;margin-top:20px;}
+    .buttons-container{display:flex;justify-content:center;gap:28px;margin-top:26px;} /* gap pushes them apart */
 
     .logo{max-width:300px;margin:0 auto;display:block;transition:transform .5s linear;}
     .logo.spin{animation:spin 2s linear infinite;}
     @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 
     .response-wrapper{position:relative;display:inline-block;}
-    .response{margin-top:20px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto;
-              border:1px solid #ddd;border-radius:10px;padding:14px 18px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
-              width:500px;max-width:90%;margin:20px auto;}
+    .response{margin-top:22px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto;
+              border:1px solid #ddd;border-radius:12px;padding:16px 20px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
+              width:500px;max-width:90%;margin:22px auto;}
     .response strong{font-weight:700;}
 
-    .copy-btn{position:absolute;top:6px;right:6px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
+    .copy-btn{position:absolute;top:8px;right:8px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
     .copy-btn:hover{opacity:1;}
 
     .fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
     .edit-note{font-size:12px;color:#666;text-align:center;margin-top:10px;}
     .warning{color:red;font-size:14px;margin-top:10px;}
 
-    /* ────────── modal shell ────────── */
+    /* ───── modal shell ───── */
     .modal{display:none;position:fixed;z-index:2;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.4);
            justify-content:center;align-items:center;}
-    .modal-content{background:#fff;padding:24px 32px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;}
+    .modal-content{background:#fff;padding:26px 34px;border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.25);text-align:center;}
 
-    /* ────────── NEW soft-touch buttons ────────── */
+    /* ───── super-squishy buttons ───── */
     .search-btn,
     .style-btn{
-      --btn-clr:var(--blue);                    /* default colour */
-      background:var(--btn-clr);
-      color:#fff;
+      --btn-clr:var(--blue);
+
+      /* size / radius */
+      padding:22px 48px;
+      font-size:18px;
+      border-radius:50px;       /* extra round */
       border:none;
-      padding:18px 40px;                       /* larger, plusher */
-      font-size:16px;
-      border-radius:34px;
+      color:#fff;
+      background:var(--btn-clr);
       cursor:pointer;
-      letter-spacing:.3px;
+      letter-spacing:.35px;
 
-      /* vinyl-sheen highlight */
+      /* soft highlight + deep “puff” shadows */
       background-image:
-        radial-gradient(145% 145% at 30% 30%, rgba(255,255,255,.30), rgba(255,255,255,0) 60%);
-
-      /* raised state */
+        radial-gradient(160% 160% at 25% 25%,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 55%);
       box-shadow:
-          8px  8px 18px rgba(0,0,0,.25),
-         -8px -8px 18px rgba(255,255,255,.8);
+        10px  10px 22px rgba(0,0,0,.28),
+       -10px -10px 22px rgba(255,255,255,.9);
 
-      transition:box-shadow .18s,transform .18s;
+      transition:box-shadow .18s ease,transform .18s ease;
     }
-    /* hover = gentle lift */
+
+    /* hover (lift & brighter) */
     .search-btn:hover,
     .style-btn:hover{
       box-shadow:
-          12px 12px 22px rgba(0,0,0,.28),
-         -12px -12px 22px rgba(255,255,255,.85);
-      transform:translateY(-2px);
+        14px 14px 26px rgba(0,0,0,.32),
+       -14px -14px 26px rgba(255,255,255,.95);
+      transform:translateY(-3px);
     }
-    /* pressed = sunken inset */
+
+    /* pressed (sunken into page) */
     .search-btn:active,
     .style-btn:active{
       box-shadow:
-          inset 6px 6px 10px  rgba(0,0,0,.28),
-          inset -6px -6px 10px rgba(255,255,255,.9);
-      transform:scale(.95);
+        inset 8px 8px 14px rgba(0,0,0,.28),
+        inset -8px -8px 14px rgba(255,255,255,.92);
+      transform:scale(.93);
     }
 
-    /* ── style-picker variants ── */
+    /* ───── colour variants ───── */
     .lish-btn {--btn-clr:var(--navy);}
     .gonzo-btn{--btn-clr:var(--orange);}
 
-    /* fun gonzo animation */
+    /* fun gonzo flash */
     @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
-    @keyframes flash {0%,100%{filter:none}50%{filter:brightness(1.5) saturate(1.9)}}
-    .gonzo-btn:active{animation:wiggle .4s ease-in-out,flash .4s linear;}
+    @keyframes flash {0%,100%{filter:none}50%{filter:brightness(1.55) saturate(2)}}
+    .gonzo-btn:active{animation:wiggle .45s ease-in-out,flash .45s linear;}
   </style>
 </head>
 <body>
@@ -152,43 +154,39 @@
 
 <script>
   /* ---------- modal helpers ---------- */
-  function showModal(){document.getElementById('emailModal').style.display='flex';}
-  function closeModal(){document.getElementById('emailModal').style.display='none';}
-  function closeWelcomeModal(){document.getElementById('welcomeModal').style.display='none';}
-
+  const CE = id=>document.getElementById(id);
+  function showModal(){CE('emailModal').style.display='flex';}
+  function closeModal(){CE('emailModal').style.display='none';}
+  function closeWelcomeModal(){CE('welcomeModal').style.display='none';}
   window.onclick=e=>{
-    if(e.target===document.getElementById('emailModal')) closeModal();
-    if(e.target===document.getElementById('welcomeModal')) closeWelcomeModal();
+    if(e.target===CE('emailModal')) closeModal();
+    if(e.target===CE('welcomeModal')) closeWelcomeModal();
   };
 
   /* ---------- utility ---------- */
-  function countWords(s){return s.trim().split(/\s+/).length;}
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const countWords=s=>s.trim().split(/\s+/).length;
 
   let lastQuery='';
-  const copyBtn=document.getElementById('copyBtn'); copyBtn.style.display='none';
+  const copyBtn=CE('copyBtn'); copyBtn.style.display='none';
 
   /* ---------- digby flow ---------- */
   function prepDigby(){
     lastQuery=document.querySelector('.search-box').value.trim();
     if(!lastQuery){alert('Paste some text first.');return;}
-    if(countWords(lastQuery)>20000){
-      document.getElementById('warning').style.display='block';return;
-    }
-    document.getElementById('warning').style.display='none';
-    document.getElementById('styleModal').style.display='flex';
+    if(countWords(lastQuery)>20000){CE('warning').style.display='block';return;}
+    CE('warning').style.display='none';
+    CE('styleModal').style.display='flex';
   }
 
   async function runStyle(flag,btn){
     btn.blur();
-    setTimeout(()=>{document.getElementById('styleModal').style.display='none';},250);
+    setTimeout(()=>{CE('styleModal').style.display='none';},260);
     await submitQuery('digby',flag);
   }
 
   async function submitQuery(mode,style='hybrid'){
-    const logo=document.getElementById('logo');
-    const resp=document.getElementById('response');
-    const fluff=document.getElementById('fluffMeter');
+    const logo=CE('logo'), resp=CE('response'), fluff=CE('fluffMeter');
     const textBody=mode==='digby'?lastQuery:document.querySelector('.search-box').value.trim();
     if(!textBody){alert('Paste some text first.');return;}
 
@@ -208,10 +206,9 @@
 
       copyBtn.style.display='block'; copyBtn.innerText='📦';
       copyBtn.onclick=async()=>{
-        try{
-          await navigator.clipboard.writeText(data.transformedText);
-          copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);
-        }catch{copyBtn.innerText='❌';}
+        try{await navigator.clipboard.writeText(data.transformedText);
+             copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);}
+        catch{copyBtn.innerText='❌';}
       };
 
     }catch(e){resp.innerText=`Error: ${e.message}`;}
@@ -220,13 +217,11 @@
 
   /* ---------- placeholder email submit ---------- */
   async function submitEmail(){
-    const email=document.getElementById('email').value.trim();
+    const email=CE('email').value.trim();
     if(!email){alert('enter email');return;}
     try{
       await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({email})
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})
       });
       closeModal();
     }catch{alert('email error');}
