@@ -1,89 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<link rel="icon" type="image/png" href="digbyflamingofavicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-<title>DIGBY</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="digbyflamingofavicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <title>DIGBY</title>
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
-<script>
-  window.dataLayer=[];function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date()); gtag('config','G-JL3X2414G2');
-</script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
+  <script>
+    window.dataLayer=[];function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config','G-JL3X2414G2');
+  </script>
 
-<style>
-  /* ------------- theme helpers ------------- */
-  :root{
-    --blue:#4285f4;
-    --orange:#e95800;
-    --navy:#2c3e50;
-    --shadow-dark:rgba(0,0,0,.20);
-    --shadow-light:rgba(255,255,255,.85);
-  }
+  <style>
+    :root{
+      /* brand palette for neumorphic buttons */
+      --blue:#4285f4;
+      --navy:#2c3e50;
+      --orange:#e95800;
+    }
 
-  /* ---------- layout ---------- */
-  body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#f2f2f2;}
-  .search-container{text-align:center;width:100%;}
-  .search-box{padding:10px 20px;width:500px;max-width:90%;margin:0 auto;display:block;border:1px solid #ddd;border-radius:24px;font-size:16px;}
+    /* ────────── layout ────────── */
+    body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#f2f2f2;}
+    .search-container{text-align:center;width:100%;}
+    .search-box{padding:10px 20px;width:500px;max-width:90%;margin:0 auto;display:block;border:1px solid #ddd;border-radius:24px;font-size:16px;}
 
-  .buttons-container{display:flex;justify-content:center;margin-top:20px;}
+    .buttons-container{display:flex;justify-content:center;margin-top:20px;}
 
-  /* ---------- NEW “soft-touch” buttons ---------- */
-  .search-btn,
-  .style-btn{
-    --btn-clr:var(--blue);                 /* default, can be overridden */
-    background:var(--btn-clr);
-    color:#fff;
-    border:none;
-    padding:14px 34px;
-    font-size:16px;
-    border-radius:28px;
-    cursor:pointer;
-    transition:box-shadow .18s,transform .18s;
-    box-shadow: 6px 6px 14px var(--shadow-dark),
-               -6px -6px 14px var(--shadow-light);
-  }
-  .search-btn:active,
-  .style-btn:active{
-    box-shadow: inset 6px 6px 12px var(--shadow-dark),
-                inset -6px -6px 12px var(--shadow-light);
-    transform:scale(.96);
-  }
+    .logo{max-width:300px;margin:0 auto;display:block;transition:transform .5s linear;}
+    .logo.spin{animation:spin 2s linear infinite;}
+    @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 
-  /* brand-specific colours */
-  .lish-btn { --btn-clr:var(--navy);}
-  .gonzo-btn{ --btn-clr:var(--orange);}
+    .response-wrapper{position:relative;display:inline-block;}
+    .response{margin-top:20px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto;
+              border:1px solid #ddd;border-radius:10px;padding:14px 18px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
+              width:500px;max-width:90%;margin:20px auto;}
+    .response strong{font-weight:700;}
 
-  /* keep gonzo wiggle / flash fun */
-  @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
-  @keyframes flash {0%,100%{filter:none}50%{filter:brightness(1.4) saturate(1.8)}}
-  .gonzo-btn:active{animation:wiggle .4s ease-in-out,flash .4s linear;}
+    .copy-btn{position:absolute;top:6px;right:6px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
+    .copy-btn:hover{opacity:1;}
 
-  /* ---------- other chrome (unchanged) ---------- */
-  .logo{max-width:300px;margin:0 auto;display:block;transition:transform .5s linear;}
-  .logo.spin{animation:spin 2s linear infinite;}
-  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    .fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
+    .edit-note{font-size:12px;color:#666;text-align:center;margin-top:10px;}
+    .warning{color:red;font-size:14px;margin-top:10px;}
 
-  .response-wrapper{position:relative;display:inline-block;}
-  .response{margin-top:20px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto;
-            border:1px solid #ddd;border-radius:10px;padding:14px 18px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
-            width:500px;max-width:90%;margin:20px auto;}
-  .response strong{font-weight:700;}
+    /* ────────── modal shell ────────── */
+    .modal{display:none;position:fixed;z-index:2;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.4);
+           justify-content:center;align-items:center;}
+    .modal-content{background:#fff;padding:24px 32px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;}
 
-  .copy-btn{position:absolute;top:6px;right:6px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
-  .copy-btn:hover{opacity:1;}
+    /* ────────── NEW soft-touch buttons ────────── */
+    .search-btn,
+    .style-btn{
+      --btn-clr:var(--blue);                    /* default colour */
+      background:var(--btn-clr);
+      color:#fff;
+      border:none;
+      padding:18px 40px;                       /* larger, plusher */
+      font-size:16px;
+      border-radius:34px;
+      cursor:pointer;
+      letter-spacing:.3px;
 
-  .fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
-  .edit-note{font-size:12px;color:#666;text-align:center;margin-top:10px;}
-  .warning{color:red;font-size:14px;margin-top:10px;}
+      /* vinyl-sheen highlight */
+      background-image:
+        radial-gradient(145% 145% at 30% 30%, rgba(255,255,255,.30), rgba(255,255,255,0) 60%);
 
-  /* ---------- modal shell ---------- */
-  .modal{display:none;position:fixed;z-index:2;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.4);justify-content:center;align-items:center;}
-  .modal-content{background:#fff;padding:24px 32px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;}
-</style>
+      /* raised state */
+      box-shadow:
+          8px  8px 18px rgba(0,0,0,.25),
+         -8px -8px 18px rgba(255,255,255,.8);
+
+      transition:box-shadow .18s,transform .18s;
+    }
+    /* hover = gentle lift */
+    .search-btn:hover,
+    .style-btn:hover{
+      box-shadow:
+          12px 12px 22px rgba(0,0,0,.28),
+         -12px -12px 22px rgba(255,255,255,.85);
+      transform:translateY(-2px);
+    }
+    /* pressed = sunken inset */
+    .search-btn:active,
+    .style-btn:active{
+      box-shadow:
+          inset 6px 6px 10px  rgba(0,0,0,.28),
+          inset -6px -6px 10px rgba(255,255,255,.9);
+      transform:scale(.95);
+    }
+
+    /* ── style-picker variants ── */
+    .lish-btn {--btn-clr:var(--navy);}
+    .gonzo-btn{--btn-clr:var(--orange);}
+
+    /* fun gonzo animation */
+    @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+    @keyframes flash {0%,100%{filter:none}50%{filter:brightness(1.5) saturate(1.9)}}
+    .gonzo-btn:active{animation:wiggle .4s ease-in-out,flash .4s linear;}
+  </style>
 </head>
 <body>
   <div class="search-container">
@@ -120,7 +137,7 @@
     <div class="modal-content">
       <h2>welcome</h2>
       <p>Digby makes your writing clear, slim &amp; easy to read.</p>
-      <button class="search-btn" onclick="closeWelcomeModal()">proceed</button>
+      <button onclick="closeWelcomeModal()">proceed</button>
     </div>
   </div>
 
@@ -129,85 +146,91 @@
     <div class="modal-content">
       <p style="margin-top:0">Please provide your email to continue:</p>
       <input type="email" id="email" placeholder="enter your email">
-      <button class="search-btn" onclick="submitEmail()">submit email</button>
+      <button onclick="submitEmail()">submit email</button>
     </div>
   </div>
 
 <script>
-/* ---------- modal helpers ---------- */
-function showModal(){ document.getElementById('emailModal').style.display='flex'; }
-function closeModal(){ document.getElementById('emailModal').style.display='none'; }
-function closeWelcomeModal(){ document.getElementById('welcomeModal').style.display='none'; }
-window.onclick = function(e){
-  if(e.target===document.getElementById('emailModal')) closeModal();
-  if(e.target===document.getElementById('welcomeModal')) closeWelcomeModal();
-};
+  /* ---------- modal helpers ---------- */
+  function showModal(){document.getElementById('emailModal').style.display='flex';}
+  function closeModal(){document.getElementById('emailModal').style.display='none';}
+  function closeWelcomeModal(){document.getElementById('welcomeModal').style.display='none';}
 
-/* ---------- utility ---------- */
-function countWords(s){return s.trim().split(/\s+/).length;}
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  window.onclick=e=>{
+    if(e.target===document.getElementById('emailModal')) closeModal();
+    if(e.target===document.getElementById('welcomeModal')) closeWelcomeModal();
+  };
 
-let lastQuery='';
-const copyBtn=document.getElementById('copyBtn'); copyBtn.style.display='none';
+  /* ---------- utility ---------- */
+  function countWords(s){return s.trim().split(/\s+/).length;}
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-/* ---------- digby flow ---------- */
-function prepDigby(){
-  lastQuery=document.querySelector('.search-box').value.trim();
-  if(!lastQuery){alert('Paste some text first.');return;}
-  if(countWords(lastQuery)>20000){
-    document.getElementById('warning').style.display='block';return;}
-  document.getElementById('warning').style.display='none';
-  document.getElementById('styleModal').style.display='flex';
-}
+  let lastQuery='';
+  const copyBtn=document.getElementById('copyBtn'); copyBtn.style.display='none';
 
-async function runStyle(flag,btn){
-  btn.blur();
-  setTimeout(()=>{ document.getElementById('styleModal').style.display='none'; },250);
-  await submitQuery('digby',flag);
-}
+  /* ---------- digby flow ---------- */
+  function prepDigby(){
+    lastQuery=document.querySelector('.search-box').value.trim();
+    if(!lastQuery){alert('Paste some text first.');return;}
+    if(countWords(lastQuery)>20000){
+      document.getElementById('warning').style.display='block';return;
+    }
+    document.getElementById('warning').style.display='none';
+    document.getElementById('styleModal').style.display='flex';
+  }
 
-async function submitQuery(mode,style='hybrid'){
-  const logo=document.getElementById('logo');
-  const resp=document.getElementById('response');
-  const fluff=document.getElementById('fluffMeter');
-  const textBody = mode==='digby' ? lastQuery : document.querySelector('.search-box').value.trim();
-  if(!textBody){alert('Paste some text first.');return;}
+  async function runStyle(flag,btn){
+    btn.blur();
+    setTimeout(()=>{document.getElementById('styleModal').style.display='none';},250);
+    await submitQuery('digby',flag);
+  }
 
-  try{
-    logo.classList.add('spin');
-    const r=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({text:textBody,mode,style})
-    });
-    if(r.status===403){showModal();resp.innerText='Please provide your email to continue.';return;}
-    if(!r.ok) throw new Error('Network error');
-    const data=await r.json();
+  async function submitQuery(mode,style='hybrid'){
+    const logo=document.getElementById('logo');
+    const resp=document.getElementById('response');
+    const fluff=document.getElementById('fluffMeter');
+    const textBody=mode==='digby'?lastQuery:document.querySelector('.search-box').value.trim();
+    if(!textBody){alert('Paste some text first.');return;}
 
-    resp.innerHTML='<strong>Digby wrote it like this:</strong><br><br>'+esc(data.transformedText).replace(/\n/g,'<br>');
-    fluff.innerText=(typeof data.fluff!=='undefined')?`💭 Fluff cut: ${data.fluff}%`:'';
+    try{
+      logo.classList.add('spin');
+      const r=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({text:textBody,mode,style})
+      });
+      if(r.status===403){showModal();resp.innerText='Please provide your email to continue.';return;}
+      if(!r.ok) throw new Error('Network error');
+      const data=await r.json();
 
-    copyBtn.style.display='block'; copyBtn.innerText='📦';
-    copyBtn.onclick=async()=>{
-      try{await navigator.clipboard.writeText(data.transformedText);
-          copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);}
-      catch{copyBtn.innerText='❌';}
-    };
+      resp.innerHTML='<strong>Digby wrote it like this:</strong><br><br>'+esc(data.transformedText).replace(/\\n/g,'<br>');
+      fluff.innerText=(typeof data.fluff!=='undefined')?`💭 Fluff cut: ${data.fluff}%`:'';
 
-  }catch(e){resp.innerText=`Error: ${e.message}`;}
-  finally{logo.classList.remove('spin');}
-}
+      copyBtn.style.display='block'; copyBtn.innerText='📦';
+      copyBtn.onclick=async()=>{
+        try{
+          await navigator.clipboard.writeText(data.transformedText);
+          copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);
+        }catch{copyBtn.innerText='❌';}
+      };
 
-/* ---------- placeholder email submit ---------- */
-async function submitEmail(){
-  const email=document.getElementById('email').value.trim();
-  if(!email){alert('enter email');return;}
-  try{
-    await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email',{
-      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})
-    });
-    closeModal();
-  }catch{alert('email error');}
-}
+    }catch(e){resp.innerText=`Error: ${e.message}`;}
+    finally{logo.classList.remove('spin');}
+  }
+
+  /* ---------- placeholder email submit ---------- */
+  async function submitEmail(){
+    const email=document.getElementById('email').value.trim();
+    if(!email){alert('enter email');return;}
+    try{
+      await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email})
+      });
+      closeModal();
+    }catch{alert('email error');}
+  }
 </script>
 </body>
 </html>
