@@ -13,7 +13,7 @@
 
 <style>
 :root{
-  --blue:#4285f4;--navy:#2c3e50;--orange:#e95800;--bg:#f2f2f2;
+  --blue:#4285f4; --navy:#2c3e50; --orange:#e95800; --bg:#f2f2f2;
 }
 
 /* ─── layout ─── */
@@ -74,26 +74,23 @@ body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-it
 .gonzo-btn:active{animation:wiggle .45s ease-in-out,flash .45s linear;}
 
 /* ─── BURST effect ─── */
-@keyframes boom{
-  0%{transform:translate(-50%,-50%) scale(.2);opacity:.8;}
-  60%{opacity:.5;}
-  100%{transform:translate(-50%,-50%) scale(2.8);opacity:0;}
-}
+@keyframes boom{0%{transform:translate(-50%,-50%) scale(.2);opacity:.8;}60%{opacity:.5;}100%{transform:translate(-50%,-50%) scale(2.8);opacity:0;}}
 body::before{
   content:'';position:fixed;top:50%;left:50%;width:300px;height:300px;border-radius:50%;
   pointer-events:none;opacity:0;
 }
-body.lish-burst::before{
-  background:radial-gradient(circle,var(--navy) 0%,rgba(44,62,80,0) 70%);
-  animation:boom .75s ease-out forwards;
-}
-body.gonzo-burst::before{
-  background:radial-gradient(circle,var(--orange) 0%,rgba(233,88,0,0) 70%);
-  animation:boom .75s ease-out forwards;
-}
-/* subtle screen-shake while burst plays */
+body.lish-burst::before{background:radial-gradient(circle,var(--navy) 0%,rgba(44,62,80,0) 70%);animation:boom .75s ease-out forwards;}
+body.gonzo-burst::before{background:radial-gradient(circle,var(--orange) 0%,rgba(233,88,0,0) 70%);animation:boom .75s ease-out forwards;}
 @keyframes shake{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(3px,-3px)}75%{transform:translate(-2px,4px)}}
 body.lish-burst,body.gonzo-burst{animation:shake .75s linear;}
+
+/* ─── CONFETTI ─── */
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(600px) rotate(720deg);opacity:0;}}
+.confetti{
+  position:fixed;top:-20px;width:10px;height:14px;border-radius:2px;
+  background:var(--c);pointer-events:none;z-index:9999;
+  animation:confettiFall 1.2s ease-out forwards;
+}
 </style>
 </head>
 <body>
@@ -159,11 +156,26 @@ window.onclick=e=>{
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const countWords=s=>s.trim().split(/\s+/).length;
 
-/* ---------- burst helper ---------- */
+/* ---------- burst + confetti ---------- */
 function triggerBurst(style){
   if(style==='lish'||style==='gonzo'){
     document.body.classList.add(style+'-burst');
     setTimeout(()=>document.body.classList.remove(style+'-burst'),750);
+  }
+  launchConfetti(style);
+}
+function launchConfetti(style){
+  const colors=style==='lish'
+    ?['#233142','#2c3e50','#34495e','#506680']
+    :['#ff7b00','#e95800','#ffc400','#ff4f81','#ff9f30'];
+  for(let i=0;i<25;i++){
+    const el=document.createElement('span');
+    el.className='confetti';
+    el.style.setProperty('--c',colors[Math.floor(Math.random()*colors.length)]);
+    el.style.left=Math.random()*100+'vw';
+    el.style.transform=`scale(${0.8+Math.random()*0.6})`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),1200);
   }
 }
 
