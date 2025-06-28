@@ -1,133 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<link rel="icon" type="image/png" href="digbyflamingofavicon.png" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-<title>DIGBY</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="digbyflamingofavicon.png" />
 
-<!-- Google Analytics (unchanged) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
-<script>
-  window.dataLayer = [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-  gtag("config", "G-JL3X2414G2");
-</script>
+  <!--  make sure the Inter web-font loads before first paint  -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
 
-<style>
-:root{
-  --blue:#4285f4; --navy:#2c3e50; --orange:#e95800; --violet:#6c5ce7; --bg:#f2f2f2;
-}
+  <title>DIGBY</title>
 
-/* ── responsive layout ── */
-html,body{margin:0;padding:0;background:var(--bg);font-family:'Inter',sans-serif;min-height:100%;}
-#page{max-width:560px;margin:48px auto 64px;padding:0 6vw;display:flex;flex-direction:column;align-items:center;}
+  <!-- Google Analytics (unchanged) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
+  <script>
+    window.dataLayer = [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date()); gtag('config', 'G-JL3X2414G2');
+  </script>
 
-.logo{
-  display:block;          /* NEW : guarantees block-level centering                */
-  margin-inline:auto;     /* NEW : left/right auto ⇒ horizontally centred           */
-  max-width:280px;        /* capped so it never bleeds outside container            */
-  width:100%;             /* fill available width inside the cap                    */
-  height:auto;
-  transition:transform .5s linear;
-  object-fit:contain;
-}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.logo.spin{animation:spin 2s linear infinite;}
+  <style>
+    :root{
+      --blue:#4285f4; --navy:#2c3e50; --orange:#e95800; --violet:#6c5ce7; --bg:#f2f2f2;
+    }
 
-.search-box{
-  width:100%;
-  box-sizing:border-box;
-  padding:12px 22px;
-  border:1px solid #ddd;
-  border-radius:28px;
-  font-size:16px;
-  line-height:1.4;
-  resize:vertical;
-  max-height:260px;
-}
-.search-box::placeholder{letter-spacing:.1px;}
+    /* —— layout —— */
+    body{
+      font-family:"Inter",sans-serif;
+      display:flex;justify-content:center;align-items:center;
+      height:100vh;margin:0;background:var(--bg);overflow-x:hidden;
+    }
+    .search-container{text-align:center;width:100%;}
 
-.buttons-container{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:24px;}
+    /* textarea with enforced Inter on every platform */
+    .search-box,.search-box:focus{
+      width:500px;max-width:90%;box-sizing:border-box;
+      padding:12px 22px;border:1px solid #ddd;border-radius:28px;
+      font-size:16px;line-height:1.4;resize:vertical;max-height:260px;
+      font-family:"Inter",Arial,Helvetica,sans-serif;
+    }
+    .search-box::placeholder{letter-spacing:.1px;}
 
-.response-wrapper{width:100%;position:relative;}
-.response{
-  width:100%;max-height:300px;overflow:auto;margin-top:22px;
-  font-size:16px;color:#333;text-align:left;white-space:pre-wrap;
-  border:1px solid #ddd;border-radius:12px;padding:16px 20px;background:#fff;
-  box-shadow:0 0 10px rgba(0,0,0,.1);transition:transform .25s;
-}
-.response strong{font-weight:700;}
-@keyframes boomPop{0%{transform:scale(.5) rotate(-6deg)}30%{transform:scale(1.15) rotate(3deg)}60%{transform:scale(.98) rotate(-2deg)}100%{transform:scale(1) rotate(0)}}
-.response.boom{animation:boomPop .75s ease-out;}
+    .buttons-container{display:flex;justify-content:center;gap:28px;margin-top:26px;}
 
-.copy-btn{position:absolute;top:8px;right:8px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
-.copy-btn:hover{opacity:1;}
+    .logo{max-width:300px;margin:0 auto;display:block;transition:transform .5s linear;}
+    @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    .logo.spin{animation:spin 2s linear infinite;}
 
-.fluff{font-size:14px;color:#666;margin-top:10px;text-align:center;}
-.edit-note{font-size:12px;color:#666;margin-top:18px;text-align:center;}
-.warning{color:red;font-size:14px;margin-top:10px;text-align:center;}
+    .response-wrapper{position:relative;display:inline-block;}
+    .response{
+      margin-top:22px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;
+      max-height:200px;overflow-y:auto;width:500px;max-width:90%;
+      border:1px solid #ddd;border-radius:12px;padding:16px 20px;
+      background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
+      transition:transform .25s;
+    }
+    .response strong{font-weight:700;}
+    @keyframes boomPop{
+      0%{transform:scale(.5) rotate(-6deg);}
+      30%{transform:scale(1.15) rotate(3deg);}
+      60%{transform:scale(.98) rotate(-2deg);}
+      100%{transform:scale(1) rotate(0);}
+    }
+    .response.boom{animation:boomPop .75s ease-out;}
 
-/* ── modals ── */
-.modal{display:none;position:fixed;inset:0;z-index:2;background:rgba(0,0,0,.4);justify-content:center;align-items:center;}
-.modal-content{background:#fff;padding:26px 34px;border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.25);text-align:center;}
+    .copy-btn{
+      position:absolute;top:8px;right:8px;background:transparent;border:none;
+      cursor:pointer;font-size:18px;opacity:.6;
+    }
+    .copy-btn:hover{opacity:1;}
 
-/* ── squishy buttons ── */
-.search-btn,.style-btn{
-  --btn:#4285f4;
-  padding:22px 48px;font-size:18px;border-radius:50px;border:none;color:#fff;cursor:pointer;letter-spacing:.35px;
-  background:var(--btn);
-  background-image:radial-gradient(160% 160% at 25% 25%,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 55%);
-  box-shadow:10px 10px 22px rgba(0,0,0,.28),-10px -10px 22px rgba(255,255,255,.9);
-  transition:box-shadow .18s,transform .18s;
-}
-.search-btn:hover,.style-btn:hover{box-shadow:14px 14px 26px rgba(0,0,0,.32),-14px -14px 26px rgba(255,255,255,.95);transform:translateY(-3px);}
-.search-btn:active,.style-btn:active{box-shadow:inset 8px 8px 14px rgba(0,0,0,.28),inset -8px -8px 14px rgba(255,255,255,.92);transform:scale(.93);}
-.lish-btn  {--btn:var(--navy);}
-.gonzo-btn {--btn:var(--orange);}
-.gatsby-btn{--btn:var(--violet);}
-@keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
-@keyframes flash {0%,100%{filter:none}50%{filter:brightness(1.55) saturate(2)}}
-.gonzo-btn:active{animation:wiggle .45s ease-in-out,flash .45s linear;}
+    .fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
+    .edit-note{font-size:12px;color:#666;margin-top:10px;}
+    .warning{color:red;font-size:14px;margin-top:10px;}
 
-/* ── burst & confetti (unchanged) ── */
-@keyframes boomRing{0%{transform:translate(-50%,-50%) scale(.2);opacity:.8;}100%{transform:translate(-50%,-50%) scale(2.8);opacity:0;}}
-body::before{content:'';position:fixed;top:50%;left:50%;width:300px;height:300px;border-radius:50%;pointer-events:none;opacity:0;}
-body.lish-burst::before  {background:radial-gradient(circle,var(--navy)   0%,rgba(44,62,80,0) 70%);animation:boomRing .75s ease-out;}
-body.gonzo-burst::before {background:radial-gradient(circle,var(--orange) 0%,rgba(233,88,0,0) 70%);animation:boomRing .75s ease-out;}
-body.gatsby-burst::before{background:radial-gradient(circle,var(--violet) 0%,rgba(108,92,231,0) 70%);animation:boomRing .75s ease-out;}
-@keyframes shake{0%,100%{transform:translate(0)}25%{transform:translate(-4px,2px)}50%{transform:translate(3px,-3px)}75%{transform:translate(-2px,4px)}}
-body.lish-burst,body.gonzo-burst,body.gatsby-burst{animation:shake .75s linear;}
-@media (max-width:600px){@keyframes shake{0%,100%{transform:translate(0)}40%{transform:translate(-2px,1px)}70%{transform:translate(1px,-2px)}}}
+    /* —— modal —— */
+    .modal{display:none;position:fixed;inset:0;z-index:2;background:rgba(0,0,0,.4);
+           justify-content:center;align-items:center;}
+    .modal-content{
+      background:#fff;padding:26px 34px;border-radius:18px;
+      box-shadow:0 10px 28px rgba(0,0,0,.25);text-align:center;
+    }
 
-@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(600px) rotate(720deg);opacity:0;}}
-.confetti{position:fixed;top:-20px;width:10px;height:14px;border-radius:2px;background:var(--c);pointer-events:none;z-index:9999;animation:confettiFall 1.2s ease-out forwards;}
-</style>
+    /* —— squishy buttons —— */
+    .search-btn,.style-btn{
+      --btn:#4285f4;
+      padding:22px 48px;font-size:18px;border-radius:50px;border:none;
+      color:#fff;cursor:pointer;letter-spacing:.35px;background:var(--btn);
+      background-image:radial-gradient(160% 160% at 25% 25%,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 55%);
+      box-shadow:10px 10px 22px rgba(0,0,0,.28),-10px -10px 22px rgba(255,255,255,.9);
+      transition:box-shadow .18s,transform .18s;
+    }
+    .search-btn:hover,.style-btn:hover{
+      box-shadow:14px 14px 26px rgba(0,0,0,.32),-14px -14px 26px rgba(255,255,255,.95);
+      transform:translateY(-3px);
+    }
+    .search-btn:active,.style-btn:active{
+      box-shadow:inset 8px 8px 14px rgba(0,0,0,.28),inset -8px -8px 14px rgba(255,255,255,.92);
+      transform:scale(.93);
+    }
+    .lish-btn  {--btn:var(--navy);}
+    .gonzo-btn {--btn:var(--orange);}
+    .gatsby-btn{--btn:var(--violet);}
+    @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+    @keyframes flash{0%,100%{filter:none}50%{filter:brightness(1.55) saturate(2)}}
+    .gonzo-btn:active{animation:wiggle .45s ease-in-out,flash .45s linear;}
+
+    /* —— burst ring & body shake —— */
+    @keyframes boomRing{
+      0%{transform:translate(-50%,-50%) scale(.2);opacity:.8;}
+      100%{transform:translate(-50%,-50%) scale(2.8);opacity:0;}
+    }
+    body::before{
+      content:'';position:fixed;top:50%;left:50%;width:300px;height:300px;border-radius:50%;
+      pointer-events:none;opacity:0;
+    }
+    body.lish-burst::before  {background:radial-gradient(circle,var(--navy)   0%,rgba(44,62,80,0) 70%);animation:boomRing .75s ease-out;}
+    body.gonzo-burst::before {background:radial-gradient(circle,var(--orange) 0%,rgba(233,88,0,0) 70%);animation:boomRing .75s ease-out;}
+    body.gatsby-burst::before{background:radial-gradient(circle,var(--violet) 0%,rgba(108,92,231,0) 70%);animation:boomRing .75s ease-out;}
+    @keyframes shake{0%,100%{transform:translate(0)}25%{transform:translate(-4px,2px)}50%{transform:translate(3px,-3px)}75%{transform:translate(-2px,4px)}}
+    body.lish-burst,body.gonzo-burst,body.gatsby-burst{animation:shake .75s linear;}
+
+    /* —— confetti —— */
+    @keyframes confettiFall{
+      0%{transform:translateY(0) rotate(0deg);opacity:1;}
+      100%{transform:translateY(600px) rotate(720deg);opacity:0;}
+    }
+    .confetti{
+      position:fixed;top:-20px;width:10px;height:14px;border-radius:2px;
+      background:var(--c);pointer-events:none;z-index:9999;
+      animation:confettiFall 1.2s ease-out forwards;
+    }
+  </style>
 </head>
 <body>
-  <div id="page">
-    <div class="search-container">
-      <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo" id="logo">
+  <div class="search-container">
+    <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo" id="logo" />
 
-      <textarea class="search-box" rows="7" placeholder="Paste your copy here, then DIGBY it..."></textarea>
-      <div class="warning" id="warning" style="display:none;">Please enter no more than 20 000 words.</div>
+    <textarea class="search-box" rows="7" placeholder="Paste your copy here, then DIGBY it..."></textarea>
+    <div class="warning" id="warning" style="display:none;">Please enter no more than 20&nbsp;000 words.</div>
 
-      <div class="buttons-container">
-        <button class="search-btn" onclick="prepDigby()">DIGBY it</button>
-      </div>
-
-      <div class="response-wrapper">
-        <button class="copy-btn" id="copyBtn" title="Copy to clipboard">📦</button>
-        <div class="response" id="response"></div>
-        <div class="fluff" id="fluffMeter"></div>
-      </div>
-
-      <div class="edit-note">Always edit what Digby gives you. Writing is rewriting. 😉</div>
+    <div class="buttons-container">
+      <button class="search-btn" onclick="prepDigby()">DIGBY it</button>
     </div>
+
+    <div class="response-wrapper">
+      <button class="copy-btn" id="copyBtn" title="Copy to clipboard">📦</button>
+      <div class="response" id="response"></div>
+      <div class="fluff" id="fluffMeter"></div>
+    </div>
+
+    <div class="edit-note">Always edit what Digby gives you. Writing is rewriting. 😉</div>
   </div>
 
   <!-- style picker -->
@@ -144,7 +167,7 @@ body.lish-burst,body.gonzo-burst,body.gatsby-burst{animation:shake .75s linear;}
   <div id="welcomeModal" class="modal">
     <div class="modal-content">
       <h2>welcome</h2>
-      <p>Digby makes your writing clear, slim & easy to read.</p>
+      <p>Digby makes your writing clear, slim&nbsp;&amp;&nbsp;easy to read.</p>
       <button onclick="closeWelcomeModal()">proceed</button>
     </div>
   </div>
@@ -153,26 +176,26 @@ body.lish-burst,body.gonzo-burst,body.gatsby-burst{animation:shake .75s linear;}
   <div id="emailModal" class="modal">
     <div class="modal-content">
       <p style="margin-top:0">Please provide your email to continue:</p>
-      <input type="email" id="email" placeholder="enter your email" />
+      <input type="email" id="email" placeholder="enter your email">
       <button onclick="submitEmail()">submit email</button>
     </div>
   </div>
 
 <script>
-/* helpers */
-const $       = id => document.getElementById(id);
-const esc     = s  => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const countWords = s => s.trim().split(/\s+/).length;
-
+/* —— helpers —— */
+const $=id=>document.getElementById(id);
 function showModal(){ $('emailModal').style.display='flex'; }
 function closeModal(){ $('emailModal').style.display='none'; }
 function closeWelcomeModal(){ $('welcomeModal').style.display='none'; }
-window.onclick = e => {
-  if(e.target===$('emailModal'))   closeModal();
+window.onclick=e=>{
+  if(e.target===$('emailModal')) closeModal();
   if(e.target===$('welcomeModal')) closeWelcomeModal();
 };
 
-/* burst + confetti */
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const countWords=s=>s.trim().split(/\s+/).length;
+
+/* —— burst / confetti —— */
 function triggerBurst(style){
   if(['lish','gonzo','gatsby'].includes(style)){
     document.body.classList.add(style+'-burst');
@@ -197,7 +220,7 @@ function launchConfetti(style){
   }
 }
 
-/* main flow */
+/* —— flow —— */
 let lastQuery='';
 const copyBtn=$('copyBtn'); copyBtn.style.display='none';
 
@@ -209,10 +232,10 @@ function prepDigby(){
   $('styleModal').style.display='flex';
 }
 async function runStyle(style,btn){
-  btn.blur();
-  setTimeout(()=>{$('styleModal').style.display='none';},260);
+  btn.blur(); setTimeout(()=>$('styleModal').style.display='none',260);
   await submitQuery(style);
 }
+
 async function submitQuery(style='lish'){
   const logo=$('logo'),resp=$('response'),fluff=$('fluffMeter');
   if(!lastQuery){alert('Paste some text first.');return;}
@@ -220,13 +243,11 @@ async function submitQuery(style='lish'){
   try{
     logo.classList.add('spin'); triggerBurst(style);
     const r=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+      method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({text:lastQuery,style})
     });
     if(r.status===403){showModal();resp.innerText='Please provide your email to continue.';return;}
     if(!r.ok) throw new Error('Network error');
-
     const data=await r.json();
 
     resp.classList.remove('boom'); void resp.offsetWidth;
@@ -237,22 +258,20 @@ async function submitQuery(style='lish'){
     copyBtn.style.display='block'; copyBtn.innerText='📦';
     copyBtn.onclick=async()=>{
       try{await navigator.clipboard.writeText(data.transformedText);
-          copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);}
+           copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);}
       catch{copyBtn.innerText='❌';}
     };
   }catch(e){resp.innerText=`Error: ${e.message}`;}
   finally{logo.classList.remove('spin');}
 }
 
-/* placeholder email submit */
+/* —— placeholder email submit —— */
 async function submitEmail(){
   const email=$('email').value.trim();
   if(!email){alert('enter email');return;}
   try{
     await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email})
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})
     });
     closeModal();
   }catch{alert('email error');}
