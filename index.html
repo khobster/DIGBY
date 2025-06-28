@@ -1,97 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<link rel="icon" type="image/png" href="digbyflamingofavicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-<title>DIGBY</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="digbyflamingofavicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <title>DIGBY</title>
 
-<!-- Google Analytics (unchanged) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
-<script>window.dataLayer=[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JL3X2414G2');</script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JL3X2414G2"></script>
+  <script>
+    window.dataLayer=[];function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config','G-JL3X2414G2');
+  </script>
 
-<style>
-:root{
-  --blue:#4285f4; --navy:#2c3e50; --orange:#e95800; --bg:#f2f2f2;
-}
+  <style>
+    :root{
+      --blue:#4285f4; --navy:#2c3e50; --orange:#e95800; --bg:#f2f2f2;
+    }
 
-/* ─── layout ─── */
-body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:var(--bg);overflow-x:hidden;}
-.search-container{text-align:center;width:100%;}
-.search-box{
-  padding:12px 22px;width:500px;max-width:90%;margin:0 auto;
-  border:1px solid #ddd;border-radius:28px;font-size:16px;font-family:'Inter',sans-serif;
-}
-.search-box::placeholder{font-family:'Inter',sans-serif;}
+    /* ───── layout ───── */
+    body{font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:var(--bg);}
+    .search-container{text-align:center;width:100%;}
+    .search-box{padding:12px 22px;width:500px;max-width:90%;margin:0 auto;display:block;border:1px solid #ddd;border-radius:28px;font-size:16px;}
 
-.buttons-container{display:flex;justify-content:center;gap:28px;margin-top:26px;}
+    .buttons-container{display:flex;justify-content:center;gap:28px;margin-top:26px;}
 
-.logo{max-width:300px;margin:0 auto;display:block;transition:transform .5s linear;}
-.logo.spin{animation:spin 2s linear infinite;} @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    .logo{max-width:300px;margin:0 auto;display:block;transition:transform .5s linear;}
+    .logo.spin{animation:spin 2s linear infinite;}
+    @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 
-.response-wrapper{position:relative;display:inline-block;}
-.response{
-  margin-top:22px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;
-  max-height:200px;overflow-y:auto;width:500px;max-width:90%;
-  border:1px solid #ddd;border-radius:12px;padding:16px 20px;background:#fff;
-  box-shadow:0 0 10px rgba(0,0,0,.1);
-}
-.response strong{font-weight:700;}
+    .response-wrapper{position:relative;display:inline-block;}
+    .response{margin-top:22px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto;
+              border:1px solid #ddd;border-radius:12px;padding:16px 20px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
+              width:500px;max-width:90%;margin:22px auto;transition:transform .25s;}
+    .response strong{font-weight:700;}
 
-.copy-btn{position:absolute;top:8px;right:8px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
-.copy-btn:hover{opacity:1;}
+    /* BOOM reveal */
+    @keyframes boomPop{
+      0%  {transform:scale(.5) rotate(-6deg);box-shadow:0 0 0 0 rgba(255,0,0,.6);}
+      30% {transform:scale(1.15) rotate(3deg);box-shadow:0 0 25px 8px rgba(255,0,255,.45);}
+      60% {transform:scale(.98) rotate(-2deg);box-shadow:0 0 18px 4px rgba(0,200,255,.35);}
+      100%{transform:scale(1) rotate(0);box-shadow:0 0 10px rgba(0,0,0,.1);}
+    }
+    .response.boom{animation:boomPop .75s ease-out;}
 
-.fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
-.edit-note{font-size:12px;color:#666;text-align:center;margin-top:10px;}
-.warning{color:red;font-size:14px;margin-top:10px;}
+    .copy-btn{position:absolute;top:8px;right:8px;background:transparent;border:none;cursor:pointer;font-size:18px;opacity:.6;}
+    .copy-btn:hover{opacity:1;}
 
-/* ─── modal shell ─── */
-.modal{display:none;position:fixed;z-index:2;inset:0;background:rgba(0,0,0,.4);justify-content:center;align-items:center;}
-.modal-content{background:#fff;padding:26px 34px;border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.25);text-align:center;}
+    .fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
+    .edit-note{font-size:12px;color:#666;text-align:center;margin-top:10px;}
+    .warning{color:red;font-size:14px;margin-top:10px;}
 
-/* ─── super-squishy buttons ─── */
-.search-btn,.style-btn{
-  --btn-clr:var(--blue);
-  padding:22px 48px;font-size:18px;border-radius:50px;border:none;color:#fff;
-  background:var(--btn-clr);cursor:pointer;letter-spacing:.35px;
-  background-image:radial-gradient(160% 160% at 25% 25%,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 55%);
-  box-shadow:10px 10px 22px rgba(0,0,0,.28),-10px -10px 22px rgba(255,255,255,.9);
-  transition:box-shadow .18s,transform .18s;
-}
-.search-btn:hover,.style-btn:hover{
-  box-shadow:14px 14px 26px rgba(0,0,0,.32),-14px -14px 26px rgba(255,255,255,.95);
-  transform:translateY(-3px);
-}
-.search-btn:active,.style-btn:active{
-  box-shadow:inset 8px 8px 14px rgba(0,0,0,.28),inset -8px -8px 14px rgba(255,255,255,.92);
-  transform:scale(.93);
-}
-.lish-btn{--btn-clr:var(--navy);}
-.gonzo-btn{--btn-clr:var(--orange);}
-@keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
-@keyframes flash{0%,100%{filter:none}50%{filter:brightness(1.55) saturate(2)}}
-.gonzo-btn:active{animation:wiggle .45s ease-in-out,flash .45s linear;}
+    /* modal */
+    .modal{display:none;position:fixed;z-index:2;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.4);justify-content:center;align-items:center;}
+    .modal-content{background:#fff;padding:26px 34px;border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.25);text-align:center;}
 
-/* ─── BURST effect ─── */
-@keyframes boom{0%{transform:translate(-50%,-50%) scale(.2);opacity:.8;}60%{opacity:.5;}100%{transform:translate(-50%,-50%) scale(2.8);opacity:0;}}
-body::before{
-  content:'';position:fixed;top:50%;left:50%;width:300px;height:300px;border-radius:50%;
-  pointer-events:none;opacity:0;
-}
-body.lish-burst::before{background:radial-gradient(circle,var(--navy) 0%,rgba(44,62,80,0) 70%);animation:boom .75s ease-out forwards;}
-body.gonzo-burst::before{background:radial-gradient(circle,var(--orange) 0%,rgba(233,88,0,0) 70%);animation:boom .75s ease-out forwards;}
-@keyframes shake{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}50%{transform:translate(3px,-3px)}75%{transform:translate(-2px,4px)}}
-body.lish-burst,body.gonzo-burst{animation:shake .75s linear;}
-
-/* ─── CONFETTI ─── */
-@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(600px) rotate(720deg);opacity:0;}}
-.confetti{
-  position:fixed;top:-20px;width:10px;height:14px;border-radius:2px;
-  background:var(--c);pointer-events:none;z-index:9999;
-  animation:confettiFall 1.2s ease-out forwards;
-}
-</style>
+    /* squishy buttons (unchanged) */
+    .search-btn,.style-btn{
+      --btn-clr:var(--blue);padding:22px 48px;font-size:18px;border-radius:50px;border:none;color:#fff;background:var(--btn-clr);cursor:pointer;
+      letter-spacing:.35px;background-image:radial-gradient(160% 160% at 25% 25%,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 55%);
+      box-shadow:10px 10px 22px rgba(0,0,0,.28),-10px -10px 22px rgba(255,255,255,.9);
+      transition:box-shadow .18s,transform .18s;
+    }
+    .search-btn:hover,.style-btn:hover{box-shadow:14px 14px 26px rgba(0,0,0,.32),-14px -14px 26px rgba(255,255,255,.95);transform:translateY(-3px);}
+    .search-btn:active,.style-btn:active{box-shadow:inset 8px 8px 14px rgba(0,0,0,.28),inset -8px -8px 14px rgba(255,255,255,.92);transform:scale(.93);}
+    .lish-btn{--btn-clr:var(--navy);}
+    .gonzo-btn{--btn-clr:var(--orange);}
+    @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+    @keyframes flash{0%,100%{filter:none}50%{filter:brightness(1.55) saturate(2)}}
+    .gonzo-btn:active{animation:wiggle .45s ease-in-out,flash .45s linear;}
+  </style>
 </head>
 <body>
   <div class="search-container">
@@ -127,7 +106,7 @@ body.lish-burst,body.gonzo-burst{animation:shake .75s linear;}
   <div id="welcomeModal" class="modal">
     <div class="modal-content">
       <h2>welcome</h2>
-      <p>Digby makes your writing clear, slim&nbsp;&amp;&nbsp;easy to read.</p>
+      <p>Digby makes your writing clear, slim &amp; easy to read.</p>
       <button onclick="closeWelcomeModal()">proceed</button>
     </div>
   </div>
@@ -142,100 +121,84 @@ body.lish-burst,body.gonzo-burst{animation:shake .75s linear;}
   </div>
 
 <script>
-/* ---------- modal helpers ---------- */
-const CE=id=>document.getElementById(id);
-function showModal(){CE('emailModal').style.display='flex';}
-function closeModal(){CE('emailModal').style.display='none';}
-function closeWelcomeModal(){CE('welcomeModal').style.display='none';}
-window.onclick=e=>{
-  if(e.target===CE('emailModal')) closeModal();
-  if(e.target===CE('welcomeModal')) closeWelcomeModal();
-};
+  /* ---------- modal helpers ---------- */
+  const CE = id=>document.getElementById(id);
+  function showModal(){CE('emailModal').style.display='flex';}
+  function closeModal(){CE('emailModal').style.display='none';}
+  function closeWelcomeModal(){CE('welcomeModal').style.display='none';}
+  window.onclick=e=>{
+    if(e.target===CE('emailModal')) closeModal();
+    if(e.target===CE('welcomeModal')) closeWelcomeModal();
+  };
 
-/* ---------- util ---------- */
-const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const countWords=s=>s.trim().split(/\s+/).length;
+  /* ---------- utility ---------- */
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const countWords=s=>s.trim().split(/\s+/).length;
 
-/* ---------- burst + confetti ---------- */
-function triggerBurst(style){
-  if(style==='lish'||style==='gonzo'){
-    document.body.classList.add(style+'-burst');
-    setTimeout(()=>document.body.classList.remove(style+'-burst'),750);
+  let lastQuery='';
+  const copyBtn=CE('copyBtn'); copyBtn.style.display='none';
+
+  /* ---------- digby flow ---------- */
+  function prepDigby(){
+    lastQuery=document.querySelector('.search-box').value.trim();
+    if(!lastQuery){alert('Paste some text first.');return;}
+    if(countWords(lastQuery)>20000){CE('warning').style.display='block';return;}
+    CE('warning').style.display='none';
+    CE('styleModal').style.display='flex';
   }
-  launchConfetti(style);
-}
-function launchConfetti(style){
-  const colors=style==='lish'
-    ?['#233142','#2c3e50','#34495e','#506680']
-    :['#ff7b00','#e95800','#ffc400','#ff4f81','#ff9f30'];
-  for(let i=0;i<25;i++){
-    const el=document.createElement('span');
-    el.className='confetti';
-    el.style.setProperty('--c',colors[Math.floor(Math.random()*colors.length)]);
-    el.style.left=Math.random()*100+'vw';
-    el.style.transform=`scale(${0.8+Math.random()*0.6})`;
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),1200);
+
+  async function runStyle(flag,btn){
+    btn.blur();
+    setTimeout(()=>{CE('styleModal').style.display='none';},260);
+    await submitQuery('digby',flag);
   }
-}
 
-let lastQuery='';
-const copyBtn=CE('copyBtn'); copyBtn.style.display='none';
+  /* ---------- main fetch ---------- */
+  async function submitQuery(mode,style='hybrid'){
+    const logo=CE('logo'), resp=CE('response'), fluff=CE('fluffMeter');
+    const textBody=mode==='digby'?lastQuery:document.querySelector('.search-box').value.trim();
+    if(!textBody){alert('Paste some text first.');return;}
 
-/* ---------- digby flow ---------- */
-function prepDigby(){
-  lastQuery=document.querySelector('.search-box').value.trim();
-  if(!lastQuery){alert('Paste some text first.');return;}
-  if(countWords(lastQuery)>20000){CE('warning').style.display='block';return;}
-  CE('warning').style.display='none';
-  CE('styleModal').style.display='flex';
-}
-async function runStyle(flag,btn){
-  btn.blur(); setTimeout(()=>{CE('styleModal').style.display='none';},260);
-  await submitQuery('digby',flag);
-}
-async function submitQuery(mode,style='hybrid'){
-  const logo=CE('logo'),resp=CE('response'),fluff=CE('fluffMeter');
-  const textBody=mode==='digby'?lastQuery:document.querySelector('.search-box').value.trim();
-  if(!textBody){alert('Paste some text first.');return;}
+    try{
+      logo.classList.add('spin');
+      const r=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({text:textBody,mode,style})
+      });
+      if(r.status===403){showModal();resp.innerText='Please provide your email to continue.';return;}
+      if(!r.ok) throw new Error('Network error');
+      const data=await r.json();
 
-  try{
-    logo.classList.add('spin'); triggerBurst(style);
-    const r=await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/analyze',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({text:textBody,mode,style})
-    });
-    if(r.status===403){showModal();resp.innerText='Please provide your email to continue.';return;}
-    if(!r.ok) throw new Error('Network error');
-    const data=await r.json();
+      resp.classList.remove('boom');           // reset
+      resp.innerHTML='<strong>Digby wrote it like this:</strong><br><br>'+esc(data.transformedText).replace(/\\n/g,'<br>');
+      void resp.offsetWidth;                    // reflow for restart
+      resp.classList.add('boom');               // BOOM!
 
-    resp.innerHTML='<strong>Digby wrote it like this:</strong><br><br>'+esc(data.transformedText).replace(/\\n/g,'<br>');
-    fluff.innerText=(typeof data.fluff!=='undefined')?`💭 Fluff cut: ${data.fluff}%`:'';
+      fluff.innerText=(typeof data.fluff!=='undefined')?`💭 Fluff cut: ${data.fluff}%`:'';
 
-    copyBtn.style.display='block'; copyBtn.innerText='📦';
-    copyBtn.onclick=async()=>{
-      try{await navigator.clipboard.writeText(data.transformedText);
-          copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);}
-      catch{copyBtn.innerText='❌';}
-    };
-  }catch(e){
-    resp.innerText=`Error: ${e.message}`;
-  }finally{
-    logo.classList.remove('spin');
+      copyBtn.style.display='block'; copyBtn.innerText='📦';
+      copyBtn.onclick=async()=>{
+        try{await navigator.clipboard.writeText(data.transformedText);
+             copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);}
+        catch{copyBtn.innerText='❌';}
+      };
+
+    }catch(e){resp.innerText=`Error: ${e.message}`;}
+    finally{logo.classList.remove('spin');}
   }
-}
 
-/* ---------- placeholder email submit ---------- */
-async function submitEmail(){
-  const email=CE('email').value.trim();
-  if(!email){alert('enter email');return;}
-  try{
-    await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email',{
-      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})
-    });
-    closeModal();
-  }catch{alert('email error');}
-}
+  /* ---------- placeholder email submit ---------- */
+  async function submitEmail(){
+    const email=CE('email').value.trim();
+    if(!email){alert('enter email');return;}
+    try{
+      await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email',{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})
+      });
+      closeModal();
+    }catch{alert('email error');}
+  }
 </script>
 </body>
 </html>
