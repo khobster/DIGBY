@@ -65,9 +65,9 @@ const STYLES = {
 • Stark elemental imagery: land, fire, blood, dark, bone.`,
 
   murakami: `Edit like Haruki Murakami (in translation):
-• Calm, deadpan voice describing the quietly surreal as ordinary.
-• Clean plain sentences; small precise details (jazz, a cat, a well).
-• Let the uncanny sit unexplained; melancholy, a little lonely.`,
+• Calm, deadpan first person; state the strange as flatly as the ordinary, no alarm, no chaos.
+• Anchor everything in precise mundane detail: the coffee, a jazz record, a cat, a well, what is in the fridge.
+• Convey feeling through small gestures, not declarations; clean cinematic montage pacing; a quiet loneliness underneath.`,
 
   'sylvia-plath': `Edit like Sylvia Plath:
 • Confessional intensity; fierce, exact, startling images.
@@ -80,9 +80,9 @@ const STYLES = {
 • Trace motive and conscience; take the inner life seriously.`,
 
   'colson-whitehead': `Edit like Colson Whitehead:
-• Cool, precise prose with sudden dry wit and historical weight.
-• Clean modern sentences that turn and surprise.
-• Let irony and clear-eyed observation carry the emotion.`,
+• Precise, controlled sentences that turn on a dry, ironic pivot you do not see coming.
+• Render systems, machinery, and institutions in concrete physical detail and make them mean something.
+• Cool, clear-eyed observation carrying real historical or social weight beneath the wit.`,
 
   /* Break the form */
   dfw: `Edit like David Foster Wallace:
@@ -95,10 +95,10 @@ const STYLES = {
 • Fuse sense impression, memory, and fragment without smoothing.
 • Drop some connective tissue; trust rhythm and interior logic.`,
 
-  'joyce-wake': `Edit like James Joyce in Finnegans Wake mode (for those who KNOW):
-• Dream-language: portmanteau words, multilingual puns, musical nonsense-sense.
-• Bend spelling and fuse words to carry double and triple meanings.
-• Rivverrun rhythm over plain clarity; sound is meaning here.`,
+  'joyce-wake': `Edit like James Joyce in Finnegans Wake mode (real dreamspeak, not typos):
+• FUSE words into coinages that still sound right aloud and carry two or more meanings at once (think "laughtears", "chaosmos", "fadograph"). Never merely misspell a word, build a pun into it.
+• Layer in multilingual puns and allusions; let river-run rhythm and dream-logic steer the sense.
+• Every invented word should reward being read aloud and unpacked. Here the sound IS the meaning.`,
 
   'charlie-kaufman': `Edit like Charlie Kaufman:
 • Anxious, meta, recursive interiority; the mind watching itself.
@@ -107,19 +107,19 @@ const STYLES = {
 
   /* Stage & screen */
   'arthur-miller': `Edit like Arthur Miller:
-• Plainspoken American dialogue carrying moral and tragic weight.
-• Ordinary people under pressure; dignity and self-deception.
-• Let subtext and conscience drive the lines; nothing ornamental.`,
+• Plainspoken American voice bearing tragic, moral weight; the ordinary man cornered by the past and his own lies.
+• Guilt, social conscience, the cost of a name; "attention must be paid."
+• Charge the lines with subtext and the slow pressure of a reckoning; nothing ornamental.`,
 
-  'sam-shepard': `Edit like Sam Shepard:
-• Raw, mythic American voice; deserts, families, broken men.
-• Spare, charged dialogue with menace and dark humor in the silence.
-• Plain words, sudden poetry, a dreamlike instability under the realism.`,
+  'sam-shepard': `Edit like Sam Shepard's PROSE (Motel Chronicles, Cruising Paradise):
+• Angular, sun-puckered Western voice; record images and fragments like a screenwriter and leave the background in shadow.
+• Terse, lyric miniatures; the real weight lives between the lines, in gesture and what goes unsaid.
+• Spare Hemingway dignity crossed with slouchy, deadpan slang; sudden flashes of poetry and menace in the silence.`,
 
-  'rod-serling': `Edit like Rod Serling (Twilight Zone narration):
-• Measured, ominous, morally pointed voice-over cadence.
-• Set the ordinary scene, then tilt it toward the uncanny.
-• Build to a quiet turn that reframes everything; wry and humane.`,
+  'rod-serling': `Edit like Rod Serling (the Twilight Zone narrator and teleplay writer):
+• A measured, faintly ornate voice that addresses the reader directly ("Consider...", "Submitted for your approval...").
+• Set the ordinary scene in plain terms, then tilt it toward the uncanny and the moral.
+• Carry the irony of fate and poetic justice; build toward a quiet twist that reframes everything. Allegory under the calm.`,
 
   'spike-lee': `Edit like Spike Lee:
 • Urgent, rhythmic, direct; unafraid of the political and personal.
@@ -137,42 +137,27 @@ const STYLES = {
 • Follow with one polysyndetic riff; first-person flashes, savage humor.
 • One rogue simile per paragraph; em-dashes and ellipses welcome.`,
 
-  'susan-orlean': `Edit like Susan Orlean (narrative nonfiction):
-• Warm, curious, humane; find the wonder in an ordinary subject.
-• Vivid reported detail and gentle wit; the writer present but modest.
-• Clean, graceful sentences that make the overlooked fascinating.`,
-
   'jimmy-breslin': `Edit like Jimmy Breslin, the street-level columnist:
 • Tell it from the common man, not the podium; the gravedigger, not the general.
 • Short, punchy, tabloid-poetic sentences with working-class New York music.
 • Concrete names and places; moral anger under the plain talk.`,
 
   /* Heart on sleeve */
-  'danielle-steel': `Edit like Danielle Steel:
-• Sweeping romantic melodrama; big feeling worn openly.
-• Glamour, destiny, and emotional stakes; love and loss turned up.
-• Smooth propulsive sentences that keep the heart turning the page.`,
-
   bronte: `Edit like the Brontes (gothic romantic):
 • Passionate, windswept, interior; moors, weather, and longing.
 • Heightened emotion and moral intensity in formal 19th-century cadence.
 • Let landscape mirror feeling; love and dread entwined.`,
 
-  hallmark: `Edit like a Hallmark holiday-movie writer:
-• Cozy, wholesome, gently predictable warmth; small-town charm.
-• Simple sincere dialogue, twinkle lights, second chances, cocoa.
-• Soft stakes and a reassuring glow; everything will be okay.`,
+  hallmark: `Edit like a Hallmark Channel holiday movie:
+• Cozy small-town warmth: snow on Main Street, cocoa, twinkle lights, the square's big tree, a bake sale.
+• A big-city striver softening back into simple love, family, and home; gentle stakes, nothing truly dark.
+• Earnest, reassuring, a touch corny; every beat quietly promises everything works out by the end.`,
 
   /* Just fix it */
   plain: `Rewrite in clear, plain English anyone can read:
 • Kill jargon, buzzwords, and acronyms; say the real thing.
 • Short common words, short sentences, active voice.
-• Keep every fact and number; only the wrapping changes.`,
-
-  corporate: `Strip the corporate-speak and make it sound human:
-• Delete buzzwords (synergy, leverage, circle back, bandwidth, ideate).
-• Replace hedging with plain, direct statements; cut filler openers.
-• Warm and specific, like a smart person talking, not a press release.`
+• Keep every fact and number; only the wrapping changes.`
 };
 
 const INTENSITY = {
