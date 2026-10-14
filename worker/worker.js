@@ -176,9 +176,9 @@ const STYLES = {
 };
 
 const INTENSITY = {
-  light: 'Use a LIGHT touch: keep most of the writer\'s original and make only the clearest, highest-value edits.',
-  medium: 'Use a MEDIUM touch: edit freely toward the lens while keeping the writer\'s meaning and structure.',
-  savage: 'Use a SAVAGE touch: push the lens hard, but still EDIT the writer\'s own material, do not replace it with invented content.'
+  light: 'LIGHT touch: keep the writer\'s sentence order and structure, but you MUST still apply the lens visibly, elevate word choice and add a few lens-appropriate textures so the style is clearly felt in every paragraph. Restrained, but never a mere copyedit (changing only punctuation is a failure).',
+  medium: 'MEDIUM touch: confidently reshape sentences, diction, and rhythm into the lens. The lens must be UNMISTAKABLE on the page, while the writer\'s content, ideas, and meaning stay intact.',
+  savage: 'SAVAGE touch: fully transform the prose into the lens, rebuild sentence architecture and voice, while still editing the writer\'s OWN material (same content, same ideas, same facts). Invent no new plot or facts.'
 };
 
 const buildPrompt = ({ text, style, intensity, customVoice }) => {
@@ -193,7 +193,7 @@ const buildPrompt = ({ text, style, intensity, customVoice }) => {
 
 ${dose}
 
-Remember: you are editing THIS writer's words, not writing your own. Keep their ideas and meaning; sharpen the prose toward the lens.
+This is a STYLE edit, not a copyedit. You MUST visibly reshape diction, rhythm, and sentence architecture toward the lens. Fixing only spelling, capitalization, or punctuation is a FAILURE. Keep the writer's content, ideas, and facts (what happens, who is there, every detail they invented); transform HOW it is said. You are editing their material through this voice, never inventing new plot or replacing their ideas.
 
 Return ONLY the edited text. Then on a new line write "DIGBY NUDGE:" followed by ONE short, encouraging sentence (no dashes) naming one thing the writer could push further themselves. No other preamble or explanation.
 
