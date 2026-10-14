@@ -27,12 +27,12 @@
     /* —— layout —— */
     body{
       font-family:"Inter",sans-serif;
-      display:flex;justify-content:center;align-items:center;
-      height:100vh;margin:0;background:var(--bg);overflow-x:hidden;
+      display:flex;justify-content:center;align-items:flex-start;
+      min-height:100vh;margin:0;background:var(--bg);overflow-x:hidden;
+      padding:40px 0;
     }
     .search-container{text-align:center;width:100%;}
 
-    /* textarea with enforced Inter on every platform */
     .search-box,.search-box:focus{
       width:500px;max-width:90%;box-sizing:border-box;
       padding:12px 22px;border:1px solid #ddd;border-radius:28px;
@@ -47,15 +47,20 @@
     @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
     .logo.spin{animation:spin 2s linear infinite;}
 
+    .tagline{font-size:14px;color:#555;margin:6px auto 0;max-width:500px;}
+    .tagline b{color:var(--navy);}
+
     .response-wrapper{position:relative;display:inline-block;}
     .response{
       margin-top:22px;font-size:16px;color:#333;text-align:left;white-space:pre-wrap;
-      max-height:200px;overflow-y:auto;width:500px;max-width:90%;
+      max-height:300px;overflow-y:auto;width:500px;max-width:90%;
       border:1px solid #ddd;border-radius:12px;padding:16px 20px;
       background:#fff;box-shadow:0 0 10px rgba(0,0,0,.1);
       transition:transform .25s;
     }
     .response strong{font-weight:700;}
+    .response del{background:#ffe3e3;color:#c0392b;border-radius:3px;}
+    .response ins{background:#e3ffe8;color:#1e7e34;text-decoration:none;border-radius:3px;}
     @keyframes boomPop{
       0%{transform:scale(.5) rotate(-6deg);}
       30%{transform:scale(1.15) rotate(3deg);}
@@ -70,20 +75,77 @@
     }
     .copy-btn:hover{opacity:1;}
 
-    .fluff{font-size:14px;color:#666;margin-top:6px;text-align:center;}
-    .edit-note{font-size:12px;color:#666;margin-top:10px;}
+    .result-bar{display:none;justify-content:center;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap;}
+    .mini-btn{
+      border:1px solid #ccc;background:#fff;border-radius:16px;padding:6px 14px;
+      font-size:13px;cursor:pointer;font-family:"Inter",sans-serif;transition:background .15s,border-color .15s;
+    }
+    .mini-btn:hover{border-color:var(--navy);}
+    .mini-btn.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+    .fluff{font-size:14px;color:#666;margin-top:8px;text-align:center;}
+    .nudge{
+      font-size:14px;color:#8a5a00;margin:12px auto 0;max-width:500px;text-align:left;
+      background:#fff7e6;border:1px solid #ffe2a8;border-radius:12px;padding:10px 16px;display:none;
+    }
+    .nudge b{color:#b06a00;}
+    .edit-note{font-size:12px;color:#666;margin-top:14px;}
     .warning{color:red;font-size:14px;margin-top:10px;}
 
     /* —— modal —— */
-    .modal{display:none;position:fixed;inset:0;z-index:2;background:rgba(0,0,0,.4);
-           justify-content:center;align-items:center;}
+    .modal{display:none;position:fixed;inset:0;z-index:2;background:rgba(0,0,0,.45);
+           justify-content:center;align-items:center;padding:20px;box-sizing:border-box;}
     .modal-content{
-      background:#fff;padding:26px 34px;border-radius:18px;
+      background:#fff;padding:22px 26px;border-radius:18px;
       box-shadow:0 10px 28px rgba(0,0,0,.25);text-align:center;
+      width:620px;max-width:100%;max-height:88vh;overflow-y:auto;
+    }
+    .modal-content h3{margin:0 0 4px;}
+    .modal-sub{font-size:13px;color:#666;margin:0 0 16px;}
+
+    .filter-box{
+      width:100%;box-sizing:border-box;padding:10px 16px;border:1px solid #ddd;
+      border-radius:22px;font-size:14px;margin-bottom:14px;font-family:"Inter",sans-serif;
     }
 
-    /* —— squishy buttons —— */
-    .search-btn,.style-btn{
+    .group{margin-bottom:14px;text-align:left;}
+    .group-label{font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:#999;margin:0 0 8px 2px;}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      border:1px solid #ddd;background:#fafafa;border-radius:20px;padding:8px 14px;
+      font-size:14px;cursor:pointer;font-family:"Inter",sans-serif;transition:all .14s;
+      border-left:4px solid var(--c,#bbb);
+    }
+    .chip:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.12);}
+    .chip.sel{background:var(--c,#333);color:#fff;border-color:var(--c,#333);}
+
+    .custom-wrap{display:none;margin:8px 0 16px;text-align:left;}
+    .custom-wrap input{
+      width:100%;box-sizing:border-box;padding:10px 16px;border:1px solid #ddd;
+      border-radius:22px;font-size:14px;font-family:"Inter",sans-serif;
+    }
+
+    .intensity-wrap{text-align:left;margin:16px 2px 10px;}
+    .intensity-wrap label{font-size:12px;color:#777;}
+    .seg{display:flex;gap:8px;margin-top:6px;}
+    .seg button{
+      flex:1;padding:8px 0;border:1px solid #ddd;background:#fafafa;border-radius:14px;
+      font-size:13px;cursor:pointer;font-family:"Inter",sans-serif;transition:all .14s;
+    }
+    .seg button.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+    .go-btn{
+      margin-top:16px;padding:16px 40px;font-size:17px;border-radius:40px;border:none;color:#fff;
+      cursor:pointer;background:var(--blue);letter-spacing:.3px;
+      background-image:radial-gradient(160% 160% at 25% 25%,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 55%);
+      box-shadow:8px 8px 18px rgba(0,0,0,.24),-8px -8px 18px rgba(255,255,255,.9);
+      transition:box-shadow .18s,transform .18s;
+    }
+    .go-btn:hover{transform:translateY(-2px);}
+    .go-btn:active{transform:scale(.94);}
+    .go-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+    .search-btn{
       --btn:#4285f4;
       padding:22px 48px;font-size:18px;border-radius:50px;border:none;
       color:#fff;cursor:pointer;letter-spacing:.35px;background:var(--btn);
@@ -91,20 +153,14 @@
       box-shadow:10px 10px 22px rgba(0,0,0,.28),-10px -10px 22px rgba(255,255,255,.9);
       transition:box-shadow .18s,transform .18s;
     }
-    .search-btn:hover,.style-btn:hover{
+    .search-btn:hover{
       box-shadow:14px 14px 26px rgba(0,0,0,.32),-14px -14px 26px rgba(255,255,255,.95);
       transform:translateY(-3px);
     }
-    .search-btn:active,.style-btn:active{
+    .search-btn:active{
       box-shadow:inset 8px 8px 14px rgba(0,0,0,.28),inset -8px -8px 14px rgba(255,255,255,.92);
       transform:scale(.93);
     }
-    .lish-btn  {--btn:var(--navy);}
-    .gonzo-btn {--btn:var(--orange);}
-    .gatsby-btn{--btn:var(--violet);}
-    @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
-    @keyframes flash{0%,100%{filter:none}50%{filter:brightness(1.55) saturate(2)}}
-    .gonzo-btn:active{animation:wiggle .45s ease-in-out,flash .45s linear;}
 
     /* —— burst ring & body shake —— */
     @keyframes boomRing{
@@ -113,13 +169,11 @@
     }
     body::before{
       content:'';position:fixed;top:50%;left:50%;width:300px;height:300px;border-radius:50%;
-      pointer-events:none;opacity:0;
+      pointer-events:none;opacity:0;background:radial-gradient(circle,var(--burst,#4285f4) 0%,rgba(66,133,244,0) 70%);
     }
-    body.lish-burst::before  {background:radial-gradient(circle,var(--navy)   0%,rgba(44,62,80,0) 70%);animation:boomRing .75s ease-out;}
-    body.gonzo-burst::before {background:radial-gradient(circle,var(--orange) 0%,rgba(233,88,0,0) 70%);animation:boomRing .75s ease-out;}
-    body.gatsby-burst::before{background:radial-gradient(circle,var(--violet) 0%,rgba(108,92,231,0) 70%);animation:boomRing .75s ease-out;}
+    body.burst::before{animation:boomRing .75s ease-out;}
     @keyframes shake{0%,100%{transform:translate(0)}25%{transform:translate(-4px,2px)}50%{transform:translate(3px,-3px)}75%{transform:translate(-2px,4px)}}
-    body.lish-burst,body.gonzo-burst,body.gatsby-burst{animation:shake .75s linear;}
+    body.burst{animation:shake .75s linear;}
 
     /* —— confetti —— */
     @keyframes confettiFall{
@@ -137,7 +191,8 @@
   <div class="search-container">
     <img src="digbyflamingo.png" alt="DIGBY Logo" class="logo" id="logo" />
 
-    <textarea class="search-box" rows="7" placeholder="Paste your copy here, then DIGBY it..."></textarea>
+    <textarea class="search-box" rows="7" placeholder="Paste your writing here, then DIGBY it..."></textarea>
+    <p class="tagline">DIGBY <b>edits</b>. You <b>write</b>. Sharpen your own prose through a lens, don't hand it over.</p>
     <div class="warning" id="warning" style="display:none;">Please enter no more than 20&nbsp;000 words.</div>
 
     <div class="buttons-container">
@@ -145,74 +200,134 @@
     </div>
 
     <div class="response-wrapper">
-      <button class="copy-btn" id="copyBtn" title="Copy to clipboard">📦</button>
+      <button class="copy-btn" id="copyBtn" title="Copy to clipboard" style="display:none;">📦</button>
       <div class="response" id="response"></div>
-      <div class="fluff" id="fluffMeter"></div>
     </div>
+    <div class="result-bar" id="resultBar">
+      <button class="mini-btn" id="diffBtn" onclick="toggleDiff()">👀 Show edits</button>
+      <span class="fluff" id="fluffMeter" style="margin-top:0;"></span>
+    </div>
+    <div class="nudge" id="nudge"></div>
 
     <div class="edit-note">Always edit what Digby gives you. Writing is rewriting. 😉</div>
   </div>
 
-  <!-- style picker -->
+  <!-- style / options picker -->
   <div id="styleModal" class="modal">
     <div class="modal-content">
-      <p style="margin:0 0 18px;font-weight:600;">pick a style</p>
-      <button class="style-btn lish-btn"   onclick="runStyle('lish',this)">🪒 lish</button>
-      <button class="style-btn gonzo-btn"  onclick="runStyle('gonzo',this)">🦇 gonzo</button>
-      <button class="style-btn gatsby-btn" onclick="runStyle('gatsby',this)">🎩 gatsby</button>
-    </div>
-  </div>
+      <h3>pick a lens</h3>
+      <p class="modal-sub">DIGBY edits your words through it. It won't write for you.</p>
+      <input class="filter-box" id="filterBox" placeholder="filter styles... (try 'joyce', 'cozy', 'crime')" oninput="renderChips(this.value)" />
+      <div id="chipArea"></div>
 
-  <!-- welcome modal -->
-  <div id="welcomeModal" class="modal">
-    <div class="modal-content">
-      <h2>welcome</h2>
-      <p>Digby makes your writing clear, slim&nbsp;&amp;&nbsp;easy to read.</p>
-      <button onclick="closeWelcomeModal()">proceed</button>
-    </div>
-  </div>
+      <div class="custom-wrap" id="customWrap">
+        <input id="customVoice" placeholder="describe any voice: 'a tired noir detective', 'my grandmother', 'a weather report'..." />
+      </div>
 
-  <!-- email modal -->
-  <div id="emailModal" class="modal">
-    <div class="modal-content">
-      <p style="margin-top:0">Please provide your email to continue:</p>
-      <input type="email" id="email" placeholder="enter your email">
-      <button onclick="submitEmail()">submit email</button>
+      <div class="intensity-wrap">
+        <label>intensity</label>
+        <div class="seg" id="intensitySeg">
+          <button data-i="light"  onclick="setIntensity('light',this)">light</button>
+          <button data-i="medium" class="on" onclick="setIntensity('medium',this)">medium</button>
+          <button data-i="savage" onclick="setIntensity('savage',this)">savage</button>
+        </div>
+      </div>
+
+      <button class="go-btn" id="goBtn" onclick="go()" disabled>pick a lens first</button>
     </div>
   </div>
 
 <script>
 /* —— helpers —— */
 const $=id=>document.getElementById(id);
-function showModal(){ $('emailModal').style.display='flex'; }
-function closeModal(){ $('emailModal').style.display='none'; }
-function closeWelcomeModal(){ $('welcomeModal').style.display='none'; }
-window.onclick=e=>{
-  if(e.target===$('emailModal')) closeModal();
-  if(e.target===$('welcomeModal')) closeWelcomeModal();
-};
-
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const countWords=s=>s.trim().split(/\s+/).length;
 
+/* —— the curated lens menu (ids MUST match worker STYLES keys) —— */
+const MENU=[
+  {group:'Cut it down', color:'#2c3e50', items:[
+    ['lish','🪒 Lish'],['hemingway','🧊 Hemingway'],['elmore-leonard','🔫 Elmore Leonard'],['beckett','🕳️ Beckett']]},
+  {group:'Let it sing', color:'#6c5ce7', items:[
+    ['gatsby','🎩 Gatsby'],['donna-tartt','🏛️ Donna Tartt'],['mccarthy','🩸 McCarthy'],['murakami','🐈 Murakami'],
+    ['sylvia-plath','🖤 Sylvia Plath'],['george-eliot','🪶 George Eliot'],['colson-whitehead','🧭 Colson Whitehead']]},
+  {group:'Break the form', color:'#00a3a3', items:[
+    ['dfw','♾️ David Foster Wallace'],['joyce-ulysses','🌀 Joyce (Ulysses)'],['joyce-wake','💤 Joyce (Finnegans Wake)'],['charlie-kaufman','🪞 Charlie Kaufman']]},
+  {group:'Stage & screen', color:'#c0392b', items:[
+    ['arthur-miller','🎭 Arthur Miller'],['sam-shepard','🌵 Sam Shepard'],['rod-serling','📺 Rod Serling'],['spike-lee','🎬 Spike Lee'],['chuck-jones','💥 Chuck Jones']]},
+  {group:'Get the story', color:'#e95800', items:[
+    ['gonzo','🦇 Gonzo'],['susan-orlean','🌺 Susan Orlean'],['jimmy-breslin','🗞️ Jimmy Breslin']]},
+  {group:'Heart on sleeve', color:'#e84393', items:[
+    ['danielle-steel','💎 Danielle Steel'],['bronte','🌧️ Brontë'],['hallmark','🎄 Hallmark']]},
+  {group:'Just fix it', color:'#2d8a4e', items:[
+    ['plain','🧼 Plain English'],['corporate','🧟 Corporate Killer']]},
+  {group:'Your call', color:'#4285f4', items:[
+    ['custom','✨ Custom voice']]}
+];
+const COLOR={}; MENU.forEach(g=>g.items.forEach(([id])=>COLOR[id]=g.color));
+
+let selStyle=null, selIntensity='medium', lastQuery='', lastInput='', lastOutput='', diffOn=false;
+
+/* —— render the chip menu (with optional filter) —— */
+function renderChips(filter=''){
+  const f=filter.trim().toLowerCase();
+  const area=$('chipArea'); area.innerHTML='';
+  MENU.forEach(g=>{
+    const items=g.items.filter(([id,name])=>!f||name.toLowerCase().includes(f)||id.includes(f));
+    if(!items.length) return;
+    const wrap=document.createElement('div'); wrap.className='group';
+    const lbl=document.createElement('p'); lbl.className='group-label'; lbl.textContent=g.group; wrap.appendChild(lbl);
+    const chips=document.createElement('div'); chips.className='chips';
+    items.forEach(([id,name])=>{
+      const b=document.createElement('button');
+      b.className='chip'+(id===selStyle?' sel':''); b.textContent=name;
+      b.style.setProperty('--c',g.color);
+      b.onclick=()=>selectStyle(id);
+      chips.appendChild(b);
+    });
+    wrap.appendChild(chips); area.appendChild(wrap);
+  });
+}
+function selectStyle(id){
+  selStyle=id;
+  $('customWrap').style.display = id==='custom' ? 'block' : 'none';
+  renderChips($('filterBox').value);
+  const go=$('goBtn'); go.disabled=false; go.textContent='DIGBY it';
+  if(id==='custom') setTimeout(()=>$('customVoice').focus(),50);
+}
+function setIntensity(i,btn){
+  selIntensity=i;
+  [...$('intensitySeg').children].forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+/* —— flow —— */
+function prepDigby(){
+  lastQuery=document.querySelector('.search-box').value.trim();
+  if(!lastQuery){alert('Paste some writing first.');return;}
+  if(countWords(lastQuery)>20000){$('warning').style.display='block';return;}
+  $('warning').style.display='none';
+  selStyle=null; $('goBtn').disabled=true; $('goBtn').textContent='pick a lens first';
+  $('customWrap').style.display='none'; $('filterBox').value='';
+  renderChips();
+  $('styleModal').style.display='flex';
+}
+async function go(){
+  if(!selStyle) return;
+  const customVoice = selStyle==='custom' ? $('customVoice').value.trim() : '';
+  if(selStyle==='custom' && !customVoice){alert('Describe a voice, or pick a lens.');return;}
+  $('styleModal').style.display='none';
+  await submitQuery(selStyle, selIntensity, customVoice);
+}
+
 /* —— burst / confetti —— */
 function triggerBurst(style){
-  if(['lish','gonzo','gatsby'].includes(style)){
-    document.body.classList.add(style+'-burst');
-    setTimeout(()=>document.body.classList.remove(style+'-burst'),750);
-  }
-  launchConfetti(style);
-}
-function launchConfetti(style){
-  const palette={
-    lish  :['#233142','#2c3e50','#34495e','#506680'],
-    gonzo :['#ff7b00','#e95800','#ffc400','#ff4f81','#ff9f30'],
-    gatsby:['#6c5ce7','#a29bfe','#ffeaa7','#fdcb6e']
-  }[style]||['#bbb'];
+  const c=COLOR[style]||'#4285f4';
+  document.body.style.setProperty('--burst',c);
+  document.body.classList.add('burst');
+  setTimeout(()=>document.body.classList.remove('burst'),750);
   for(let i=0;i<25;i++){
-    const el=document.createElement('span');
-    el.className='confetti';
-    el.style.setProperty('--c',palette[Math.floor(Math.random()*palette.length)]);
+    const el=document.createElement('span'); el.className='confetti';
+    el.style.setProperty('--c',c);
     el.style.left=Math.random()*100+'vw';
     el.style.transform=`scale(${0.8+Math.random()*0.6})`;
     document.body.appendChild(el);
@@ -220,49 +335,38 @@ function launchConfetti(style){
   }
 }
 
-/* —— flow —— */
-let lastQuery='';
-const copyBtn=$('copyBtn'); copyBtn.style.display='none';
-
-function prepDigby(){
-  lastQuery=document.querySelector('.search-box').value.trim();
-  if(!lastQuery){alert('Paste some text first.');return;}
-  if(countWords(lastQuery)>20000){$('warning').style.display='block';return;}
-  $('warning').style.display='none';
-  $('styleModal').style.display='flex';
-}
-async function runStyle(style,btn){
-  btn.blur(); setTimeout(()=>$('styleModal').style.display='none',260);
-  await submitQuery(style);
-}
-
-// Cloudflare Worker (free Workers AI, Llama 3.3 70B) — replaces the old OpenAI Lambda
 const ANALYZE_URL='https://digby-analyze.kevin-murawinski.workers.dev/';
 
-async function submitQuery(style='lish'){
+async function submitQuery(style, intensity, customVoice){
   const logo=$('logo'),resp=$('response'),fluff=$('fluffMeter');
-  if(!lastQuery){alert('Paste some text first.');return;}
-
+  if(!lastQuery){alert('Paste some writing first.');return;}
   try{
     logo.classList.add('spin'); triggerBurst(style);
     const r=await fetch(ANALYZE_URL,{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({text:lastQuery,style})
+      body:JSON.stringify({text:lastQuery,style,intensity,customVoice})
     });
-    // NOTE: the new Cloudflare Worker does not gate on email, so it will never
-    // return 403; this email-prompt branch is kept but is now effectively dead.
-    if(r.status===403){showModal();resp.innerText='Please provide your email to continue.';return;}
     if(!r.ok) throw new Error('Network error');
     const data=await r.json();
+    if(data.error) throw new Error(data.error);
+
+    lastInput=lastQuery; lastOutput=data.transformedText; diffOn=false;
 
     resp.classList.remove('boom'); void resp.offsetWidth;
-    resp.innerHTML='<strong>Digby wrote it like this:</strong><br><br>'+esc(data.transformedText).replace(/\n/g,'<br>');
+    renderResponse();
     resp.classList.add('boom');
+
+    $('resultBar').style.display='flex';
+    $('diffBtn').classList.remove('on'); $('diffBtn').textContent='👀 Show edits';
     fluff.innerText=data.fluff!==undefined?`💭 Fluff cut: ${data.fluff}%`:'';
 
-    copyBtn.style.display='block'; copyBtn.innerText='📦';
+    const nudge=$('nudge');
+    if(data.note){ nudge.style.display='block'; nudge.innerHTML='<b>Digby’s nudge:</b> '+esc(data.note); }
+    else nudge.style.display='none';
+
+    const copyBtn=$('copyBtn'); copyBtn.style.display='block'; copyBtn.innerText='📦';
     copyBtn.onclick=async()=>{
-      try{await navigator.clipboard.writeText(data.transformedText);
+      try{await navigator.clipboard.writeText(lastOutput);
            copyBtn.innerText='✅'; setTimeout(()=>copyBtn.innerText='📦',1500);}
       catch{copyBtn.innerText='❌';}
     };
@@ -270,17 +374,47 @@ async function submitQuery(style='lish'){
   finally{logo.classList.remove('spin');}
 }
 
-/* —— placeholder email submit —— */
-async function submitEmail(){
-  const email=$('email').value.trim();
-  if(!email){alert('enter email');return;}
-  try{
-    await fetch('https://pirb9ilp3e.execute-api.us-east-1.amazonaws.com/dev/store-email',{
-      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})
-    });
-    closeModal();
-  }catch{alert('email error');}
+function renderResponse(){
+  const resp=$('response');
+  if(diffOn){
+    resp.innerHTML='<strong>What Digby changed:</strong><br><br>'+wordDiff(lastInput,lastOutput);
+  }else{
+    resp.innerHTML='<strong>Digby edited it like this:</strong><br><br>'+esc(lastOutput).replace(/\n/g,'<br>');
+  }
 }
+function toggleDiff(){
+  // Diff is O(n*m); guard against giant inputs.
+  if(!diffOn && (countWords(lastInput)>2500 || countWords(lastOutput)>2500)){
+    alert('Diff view is off for very long passages. The edited text is still here.');
+    return;
+  }
+  diffOn=!diffOn;
+  $('diffBtn').classList.toggle('on',diffOn);
+  $('diffBtn').textContent=diffOn?'📝 Show result':'👀 Show edits';
+  renderResponse();
+}
+
+/* —— word-level diff (LCS), strikethrough cuts + highlight additions —— */
+function wordDiff(a,b){
+  const A=a.split(/(\s+)/), B=b.split(/(\s+)/);
+  const n=A.length,m=B.length;
+  const dp=Array.from({length:n+1},()=>new Int32Array(m+1));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)
+    dp[i][j]=A[i]===B[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  let i=0,j=0,out='';
+  const del=t=>t.trim()?`<del>${esc(t)}</del>`:esc(t);
+  const ins=t=>t.trim()?`<ins>${esc(t)}</ins>`:esc(t);
+  while(i<n&&j<m){
+    if(A[i]===B[j]){out+=esc(A[i]);i++;j++;}
+    else if(dp[i+1][j]>=dp[i][j+1]){out+=del(A[i]);i++;}
+    else{out+=ins(B[j]);j++;}
+  }
+  while(i<n){out+=del(A[i]);i++;}
+  while(j<m){out+=ins(B[j]);j++;}
+  return out.replace(/\n/g,'<br>');
+}
+
+window.onclick=e=>{ if(e.target===$('styleModal')) $('styleModal').style.display='none'; };
 </script>
 </body>
 </html>
