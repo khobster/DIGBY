@@ -1,0 +1,7 @@
+name = "digby-analyze"
+main = "worker.js"
+account_id = "189457f4d177d761d3847e8942f1c3b3"
+compatibility_date = "2025-09-01"
+
+[ai]
+binding = "AI"
